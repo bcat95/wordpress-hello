@@ -1,5 +1,5 @@
 <?php
 $host = 'localhost';
-$user = 'root';
-$password = '';
-$dbname = 'aigency';
+$user = 'ment_chatgpt';
+$password = 'ePEIm@d#vwgCnkOH';
+$dbname = 'ment_chatgpt';

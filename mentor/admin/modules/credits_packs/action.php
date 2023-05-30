@@ -13,7 +13,7 @@ if (isset($_POST['description'])) {
         return !is_null($value) && $value !== '';
     });
     
-    $_POST['description'] = json_encode($descriptionArray);
+    $_POST['description'] = json_encode($descriptionArray, JSON_UNESCAPED_UNICODE);
 }
 
 function handleAction($module_name, $action, $id = null) {
