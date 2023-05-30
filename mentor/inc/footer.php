@@ -92,6 +92,6 @@ if(!isset($no_footer)){?>
     echo $config->google_analytics_code;
   endif;
   ?>
-  <div class="tab-pane" id="app-load">
+
   </body>
 </html>

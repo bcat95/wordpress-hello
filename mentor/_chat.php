@@ -306,6 +306,8 @@ require_once("modules/customer/chat-session.php");
                 <span class="character-typing">
                   <div><b class='wait'><?php echo $lang['wait']; ?></b> <span></span>  <b class='is_typing'><?php echo $lang['is_typing']; ?></b></div>
                 </span>
+
+              
                 <textarea name="chat" id="chat" placeholder="<?php echo $lang['input_placeholder']; ?>" minlength="<?php echo $AI->chat_minlength; ?>" maxlength="<?php echo $AI->chat_maxlength; ?>"></textarea>
                 <?php if($AI->display_mic){?>
                 <img src="<?php echo $base_url; ?>/img/mic-start.svg" id="microphone-button">
