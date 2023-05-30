@@ -25,17 +25,6 @@ function handleAction($module_name, $action, $id = null) {
         exit();
     }
 
-    $checkSlug = $module_object->getBySlug($_POST['slug']);
-
-    // Se o slug do formulário já existe no banco de dados
-    if(is_object($checkSlug) && isset($checkSlug->slug)){
-        // Se o slug pertence a um registro diferente do que estamos tentando atualizar
-        if ($checkSlug->id !== $_POST['id']) {
-            $_POST['slug'] = $checkSlug->slug . "-";
-        }
-    }
-
-
     switch ($action) {
         case 'add':
             $_POST['item_order'] = 0;

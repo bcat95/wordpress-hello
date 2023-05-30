@@ -226,8 +226,8 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 							<div class="col-md-3">
 							    <div class="form-floating mb-3">
 							        <select name="API_MODEL" class="form-control" id="floatingAPIModel" required>
-							            <option value="gpt-4" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-4') { echo 'selected'; } ?>>gpt-4</option>
 							            <option value="gpt-3.5-turbo" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-3.5-turbo') { echo 'selected'; } ?>>gpt-3.5-turbo</option>
+							            <option value="gpt-4" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-4') { echo 'selected'; } ?>>gpt-4</option>
 							            <option value="text-davinci-003" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'text-davinci-003') { echo 'selected'; } ?>>text-davinci-003</option>
 							        </select>
 							        <label for="floatingAPIModel">API Model</label>

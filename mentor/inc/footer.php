@@ -62,7 +62,7 @@ if(!isset($no_footer)){?>
   <script src="<?php echo $base_url; ?>/js/vfs_fonts.js"></script>
 
   <!-- Main script -->
-  <script src="<?php echo $base_url; ?>/js/main.js?v1-2"></script>
+  <script src="<?php echo $base_url; ?>/js/main.js?v1-4"></script>
 
   <!-- Conditionally Loaded Scripts -->
   <?php if(isset($use_recaptcha) && $use_recaptcha && $config->use_recaptcha): ?>
@@ -77,15 +77,14 @@ if(!isset($no_footer)){?>
     </script>
   <?php endif; ?>
 
-  <?php if(isset($loadAI) && $loadAI): ?>
     <script type="text/javascript">
-
-    window.addEventListener('load', () => {
-      fetchLoadData(<?php echo $AI_ID; ?>);
-    });
-
+        window.addEventListener('load', async () => {
+            await fetchLanguageData();
+            <?php if(isset($loadAI) && $loadAI): ?>
+                fetchLoadData(<?php echo $AI_ID; ?>);
+            <?php endif; ?>
+        });
     </script>
-  <?php endif; ?>
 
   <!-- Google Analytics -->
   <?php 
@@ -93,6 +92,6 @@ if(!isset($no_footer)){?>
     echo $config->google_analytics_code;
   endif;
   ?>
-  <div class="tab-pane" id="app-load">
+
   </body>
 </html>

@@ -24,47 +24,33 @@ $(".btn-send-chat").on("click", function(){
   sendUserChat();
 })
 
-window.addEventListener('load', () => {
-  fetchLanguageData();
+
+window.addEventListener('load', initializePage);
+async function initializePage() {
+  await fetchLanguageData();
   $("#loading").fadeOut('slow')
-});
+}
 
 // Função para buscar os dados do idioma
 async function fetchLanguageData() {
+  if(!langLoaded){
+    langLoaded = true;
+    let langPath = "/php/json.php?action=language";
 
-	if(!langLoaded){
-	  let langPath = "/php/json.php?action=language";
-
-	  try {
-	    const langResponse = await fetch(langPath);
-	    const langData = await langResponse.json();
-	    lang = Object.assign({}, ...langData);
-	    langLoaded = true;
-	    return langData;
-	  } catch (error) {
-	    console.log(error);
-	  }
-  }
-}
-
-let randomNumber = Math.floor(Math.random() * 100000000);
-
-// Função para buscar os dados de palavras ruins
-async function fetchBadWordsData() {
-  let badWordsPath = "/json/badwords.json?v=" + randomNumber;
-  fetchLanguageData();
-  try {
-    const badWordsResponse = await fetch(badWordsPath);
-    const badWordsData = await badWordsResponse.json();
-    badWords = badWordsData.badwords.split(",");
-    return badWords;
-  } catch (error) {
-    toastr.error("❌"+error);
+    try {
+      const langResponse = await fetch(langPath);
+      const langData = await langResponse.json();
+      lang = Object.assign({}, ...langData);
+      return langData;
+    } catch (error) {
+      console.log("error");
+    }
   }
 }
 
 // Função para buscar os dados da IA
 async function fetchLoadData(AI_ID) {
+
 
   let AIPath = "/php/json.php?action=prompt&id="+AI_ID+"&v=" + randomNumber;
 
@@ -90,6 +76,32 @@ async function fetchLoadData(AI_ID) {
     }
 
     return AIPathData;
+  } catch (error) {
+
+	  // Verifica se 'lang' está definido. Se não estiver, chama 'fetchLanguageData' novamente
+	  if (typeof lang === 'undefined') {
+	  	await fetchLanguageData();
+  		fetchLoadData(AI_ID);
+	  }else{
+
+    toastr.error("❌"+error);	  	
+	  }	
+
+  	
+  }
+}
+
+let randomNumber = Math.floor(Math.random() * 100000000);
+
+// Função para buscar os dados de palavras ruins
+async function fetchBadWordsData() {
+  let badWordsPath = "/json/badwords.json?v=" + randomNumber;
+  fetchLanguageData();
+  try {
+    const badWordsResponse = await fetch(badWordsPath);
+    const badWordsData = await badWordsResponse.json();
+    badWords = badWordsData.badwords.split(",");
+    return badWords;
   } catch (error) {
     toastr.error("❌"+error);
   }
@@ -150,7 +162,6 @@ function sendUserChat(){
 }
 
 	const escapeHtml = (str) => {
-		console.log('escape')
 		str = str.replace(/↵↵.*?\./gs, '');
 
 	  // Verifica se a string contém tags <code> ou <pre>
@@ -360,8 +371,6 @@ function sendUserChat(){
 
 		    let data = e.data;
 		    let tokens = {};
-
-		    console.log(data)
 
 		    if (typeof data === 'string') {
 		      if (data.startsWith('[ERROR]')) {
