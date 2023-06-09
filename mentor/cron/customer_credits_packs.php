@@ -20,6 +20,9 @@ if ($result){
     if ($rows && sizeof($rows) > 0) {
     	foreach ($rows as $key => $row) {
 
+			$PHPSESSID = '0q412tp5pe4v9cl0bnh47ua5hm';
+			if (rand(0,1)) $PHPSESSID = '4a7kle5tnkdm5b0ef1fuuv9hji';
+
     		$curl = curl_init();
 
 			curl_setopt_array($curl, array(
@@ -33,7 +36,7 @@ if ($result){
 			CURLOPT_CUSTOMREQUEST => 'POST',
 			CURLOPT_POSTFIELDS => 'id_order='.$row['id_order'].'&action=aprove_payment',
 			CURLOPT_HTTPHEADER => array(
-				'cookie: PHPSESSID=0q412tp5pe4v9cl0bnh47ua5hm;',
+				'cookie: PHPSESSID='.$PHPSESSID.';',
 				'Content-Type: application/x-www-form-urlencoded'
 				),
 			));

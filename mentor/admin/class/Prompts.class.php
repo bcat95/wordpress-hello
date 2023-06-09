@@ -22,6 +22,6 @@ class Prompts extends Action{
     }
 
     public function getBySlug(?string $slug) {
-        return $this->query("SELECT id, name, slug, welcome_message, image, status, expert, description, display_contacts_user_list, display_description, display_mic, display_avatar, use_google_voice,chat_minlength,chat_maxlength FROM $this->table WHERE slug='$slug' AND status='1' LIMIT 1")->Fetch();
+       return $this->query("SELECT id, name, slug, welcome_message, image, status, expert, description, display_contacts_user_list, display_description, display_mic, display_avatar, use_google_voice,chat_minlength,chat_maxlength FROM $this->table WHERE slug='$slug' AND status='1' LIMIT 1")->Fetch();
     }      
 }
