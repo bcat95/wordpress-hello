@@ -79,7 +79,12 @@ if(isset($payment_intent->id)) {
 }
 $data['id_order'] = $getPaymentDetails->id_order;
 $data['customer_name'] = $getCustomer->name;
-$data['customer_email'] = $getCustomer->email;
+if($config->demo_mode){
+    $data['customer_email'] = '<td><span class="badge bg-danger">Email will not be shown in demo mode</span></td>';
+}else{
+    $data['customer_email'] = $getCustomer->email;
+}
+
 $data['payment_method'] = $getPaymentDetails->payment_method;
 $data['item'] = $getCreditPack->name;
 $data['price'] = $getPaymentDetails->price_label;

@@ -241,7 +241,7 @@ $get = $settings->get(1);
                     <input name="max_tokens_davinci" type="number" class="form-control" id="floatingMaxTokensDavinci" placeholder="Max tokens Davinci Model" value="<?php echo $get->max_tokens_davinci; ?>">
                     <label for="floatingMaxTokensDavinci">Max tokens Davinci Model</label>
                   </div>
-                </div>  
+                </div> 
 
                </div>
 
@@ -282,16 +282,23 @@ $get = $settings->get(1);
               </div>
             </fieldset> 
 
-            <!--
-            DALLE comming soon
+           
+           
             <fieldset class="border rounded-2 p-3 mb-4">
               <legend><h5>DALL·E 2 Configs</h5></legend>
                 <div class="row align-middle">
 
                   <div class="col-md-4">
                     <div class="form-floating mb-3">
-                      <input name="dalle_generated_img_count" type="number" class="form-control" id="floatingDallEImgCount" placeholder="Max Num Chats API" value="<?php echo $get->dalle_generated_img_count; ?>" required>
-                      <label for="floatingDallEImgCount">Max Num Chats API</label>
+                      <input name="dalle_generated_img_count" type="number" class="form-control" id="floatingDallEImgCount" placeholder="Number of images" value="<?php echo $get->dalle_generated_img_count; ?>" required>
+                      <label for="floatingDallEImgCount">Number of images</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="form-floating mb-3">
+                      <input name="dalle_spend_credits" type="number" class="form-control" id="floatingDallESpent" placeholder="Amount of credits to be spent to generate the image pack" value="<?php echo $get->dalle_spend_credits; ?>" required>
+                      <label for="floatingDallESpent">Amount of credits to be spent to generate the image pack</label>
                     </div>
                   </div>
 
@@ -308,7 +315,7 @@ $get = $settings->get(1);
                         }
                         ?>
                       </select>                 
-                      <label for="floatingDallEImgSize">Dall-E Img Size</label>
+                      <label for="floatingDallEImgSize">Dall-E Image Size</label>
                     </div>                 
                   </div>
 
@@ -316,7 +323,7 @@ $get = $settings->get(1);
                
               </div>
             </fieldset>
-          -->
+         
 
            <fieldset class="border rounded-2 p-3 mb-4">
               <legend><h5><i class="bi bi-chat"></i> Show/hide php errors and notices (just for debug purposes)</h5></legend>

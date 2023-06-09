@@ -74,7 +74,11 @@ if($getCustomer->id){
             <tbody>
               <tr>
                 <td><?php echo $getCustomer->name; ?></td>
+                <?php if($config->demo_mode){?> 
+                <td><span class="badge bg-danger">Email will not be shown in demo mode</span></td>
+                <?php }else{ ?>                   
                 <td><a href="mailto:<?php echo $getCustomer->email; ?>"><?php echo $getCustomer->email; ?></a></td>
+                <?php } ?>
                 <td><?php echo $getCustomer->created_at; ?></td>
                 <td><?php echo $getCustomer->credits; ?></td>
                 <td><?php echo $getCustomer->total_credits_spend; ?></td>

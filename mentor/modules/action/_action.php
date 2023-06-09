@@ -18,6 +18,9 @@ function sendEmail($fields) {
             'allow_self_signed' => $config->smtp_allow_self_signed == 1 ? true : false
             )
         );      
+        if (!empty($config->smtp_secure)) {
+            $mail->SMTPSecure = $config->smtp_secure;
+        }        
         $mail->CharSet = $config->smtp_charset;  
         $mail->isSMTP();
         $mail->Host = $config->smtp_host;

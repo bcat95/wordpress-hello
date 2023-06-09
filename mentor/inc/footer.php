@@ -60,9 +60,8 @@ if(!isset($no_footer)){?>
   <script src="<?php echo $base_url; ?>/js/sse.js"></script>
   <script src="<?php echo $base_url; ?>/js/pdfmake.min.js"></script>
   <script src="<?php echo $base_url; ?>/js/vfs_fonts.js"></script>
-
   <!-- Main script -->
-  <script src="<?php echo $base_url; ?>/js/main.js?v=230531"></script>
+  <script src="<?php echo $base_url; ?>/js/main.js?v1-8"></script>
 
   <!-- Conditionally Loaded Scripts -->
   <?php if(isset($use_recaptcha) && $use_recaptcha && $config->use_recaptcha): ?>
@@ -88,10 +87,11 @@ if(!isset($no_footer)){?>
 
   <!-- Google Analytics -->
   <?php 
-  if(isset($config->use_google_analytics) && $config->use_google_analytics):
-    echo $config->google_analytics_code;
-  endif;
+    if(isset($config->use_google_analytics) && $config->use_google_analytics):
+      $decoded_code = html_entity_decode($config->google_analytics_code, ENT_QUOTES | ENT_HTML401, 'UTF-8');
+      echo $decoded_code;
+    endif;
   ?>
-  <div class="tab-pane" id="app-load">
+
   </body>
 </html>

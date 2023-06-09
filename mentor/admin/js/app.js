@@ -356,15 +356,24 @@ function getMessagesJson(thread){
                     <img onerror="this.src='/img/no-image.svg'" src="${value.image}" alt="${value.name}" title="${value.name}">
                 </div>`;
             }
+
             chatHtml += `<div class="message-container">
                 <div class="message-info">
                     <div class="user-name">
                         <h5>${value.name}</h5>
                     </div>
                     <div class="message-text">
-                        <div class="chat-response">${value.message}</div>
-                    </div>
-                    <div class="date-chat">
+                        <div class="chat-response">${value.message}`;
+            if (Array.isArray(value.imageContent)) {                        
+              if (value.imageContent) {
+                  value.imageContent.map(imageUrl => {
+                      chatHtml += `<img src="${imageUrl}" alt="Image content" />`;
+                  });
+              }
+            }
+            chatHtml += `</div></div>`;
+
+            chatHtml += `<div class="date-chat">
                         <img src="/img/icon-clock.svg"> ${value.time}
                     </div>
                 </div>
@@ -380,7 +389,7 @@ function getMessagesJson(thread){
     .catch((error) => {
         console.error('Error:', error);
     });
-}    
+}   
 
 //Slugy inputs
 window.onload = function() {
@@ -392,7 +401,7 @@ window.onload = function() {
     }
 
     nameInput.oninput = function() {
-        // slugInput.value = slugify(this.value);
+        slugInput.value = slugify(this.value);
     }
 
     function slugify(text) {

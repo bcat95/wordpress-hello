@@ -18,7 +18,21 @@ if ($rowCount > 0) {
 
     $messagesArray = array();
 
+
     foreach ($getMessages as $showMessages) {
+
+        $imageContent = array();
+        $json_array = json_decode($showMessages->dall_e_array, true); // considere que o dall_e_array deve ser uma coluna na sua tabela de mensagens
+        if (json_last_error() === JSON_ERROR_NONE && isset($json_array['data'])) {
+            foreach ($json_array['data'] as $item) {
+                if (isset($item['url'])) {
+                    $imageName = $item['url'];
+                    $imageContent[] = $base_url . '/public_uploads/dalle/' . $imageName;
+                }
+            }
+        }
+
+
         if ($showMessages->role != 'system') {
             if (!$idCustomer) {
                 $idCustomer = $showMessages->id_customer;
@@ -43,12 +57,17 @@ if ($rowCount > 0) {
             $message = htmlentities($showMessages->content, ENT_QUOTES, 'UTF-8');
             $time = $showMessages->created_at;
 
+            if(!empty($imageContent)){
+                $message = '<strong class="d-flex">' . $message . '</strong>';
+            } 
+
             $messagesArray[] = array(
                 'name' => htmlentities($name, ENT_QUOTES, 'UTF-8'),
                 'thread_class' => htmlentities($thread_class, ENT_QUOTES, 'UTF-8'),
                 'image' => htmlentities($image, ENT_QUOTES, 'UTF-8'),
                 'message' => $message,
                 'time' => htmlentities($time, ENT_QUOTES, 'UTF-8'),
+                'imageContent' => $imageContent,
             );
         }
     }

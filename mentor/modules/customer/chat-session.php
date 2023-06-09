@@ -30,6 +30,7 @@ if ($isLogged) {
                 'id_message' => $message->id_message,
                 'role' => $message->role,
                 'content' => $message->content,
+                'dall_e_array' => $message->dall_e_array,
                 'datetime' => $message->created_at,
                 'total_characters' => $message->total_characters,
                 'saved' => (bool)$message->saved,
@@ -74,13 +75,14 @@ if ($isLogged) {
                 $_POST['id_prompt'] = $AI->id;
                 $_POST['role'] = $message['role'];
                 $_POST['content'] = $message['content'];
+                if (isset($message['dall_e_array'])) {
+                    $_POST['dall_e_array'] = $message['dall_e_array'];
+                }
                 $_POST['item_order'] = $message['item_order'];
                 $_POST['saved'] = 1;
-
                 if (isset($message['total_characters'])) {
                     $_POST['total_characters'] = $message['total_characters'];
                 }
-
                 $messages = new Messages();
                 if ($messages->add()) {
                     $hasItem = true;

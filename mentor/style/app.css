@@ -597,30 +597,6 @@ html[dir="rtl"] .toggle-password{
     font-size: 14px;
     color: #fff;
 }
-
-#loading{
-    background: linear-gradient(180deg, #1995F0 0%, #0072C6 100%);
-    position: fixed;
-    z-index: 999;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    align-items: center;
-    justify-content: center
-}
-#loading svg{
-    transform: scale(3);
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: 0 auto;
-    height: 100%;
-}
 .wrapper-name-and-chat{
     width: 100%;
 }
@@ -647,6 +623,7 @@ html[dir="rtl"] .toggle-password{
 .image-ia img{
     object-fit: cover;
     width: 100%;
+    border-radius: 6px;
 }
 
 /* width */
@@ -806,8 +783,8 @@ footer img:hover{
 }
 
 .bg-image{
-  background-size: cover;
-  background-position: center;
+  background-size: cover !important;
+  background-position: center !important;
 }
 
 .login-heading {
@@ -1091,6 +1068,9 @@ header .btn-close span{
 #loading .spinner{
     width: 100px;
     height: 100px;
+}
+.ai-chat-top .dropdown-center{
+    display: flex;
 }
 /*/ Small devices (landscape phones, 576px and up)/*/
 @media (max-width: 767px){

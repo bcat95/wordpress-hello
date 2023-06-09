@@ -19,6 +19,7 @@ function handleAction($module_name, $action, $id = null) {
             $message = $result ? 'Record added successfully.' : 'An error occurred while adding a new record. Please try again.';
             break;
         case 'edit':
+//            $module_object->debug(true);
             $result = $module_object->update($id);
             $message = $result ? 'Record updated successfully.' : 'An error occurred while updating the record. Please try again.';
             break;

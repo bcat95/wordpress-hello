@@ -268,6 +268,11 @@ body {
 .chat-response{
     white-space: pre-wrap;
 }
+.chat-response img{
+    max-width: 200px;
+    margin-right: 7px;
+    border-radius: 9px;
+}
 .message-container .user-name h5{
     font-size: 18px;
     font-weight: bold;

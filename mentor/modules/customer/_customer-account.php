@@ -17,7 +17,6 @@ require_once("../../inc/header.php");
   </div>  
 </section>
 
-
 <section id="panel-area">
   <div class="container">
     <div class="row">

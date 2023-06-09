@@ -6,22 +6,21 @@ $total_characters = 0;
 
 function remove_duplicate_messages($messages) {
     $temp_array = array();
+    $unique_messages = array();
     
-    foreach($messages as $key => $message) {
+    foreach ($messages as $key => $message) {
         $role = $message['role'];
         $content = $message['content'];
         
-        if (!isset($temp_array[$role.$content])) {
-            $temp_array[$role.$content] = true;
-        } else {
-            unset($messages[$key]);
+        $keyString = $role . $content;
+        
+        if (!isset($temp_array[$keyString])) {
+            $temp_array[$keyString] = true;
+            $unique_messages[] = $message;
         }
     }
     
-    // Reindex the array keys
-    $messages = array_values($messages);
-    
-    return $messages;
+    return $unique_messages;
 }
 
 if(!$isLogged){
@@ -108,15 +107,14 @@ $_SESSION["history"][$ai_id][] = [
 
 $chat_messages = $_SESSION["history"][$ai_id];
 
-$chat_messages_head = array_slice($chat_messages, 0, 4);
-$chat_messages_tail = array_slice($chat_messages, -8, 8);
+$chat_messages_head = [
+    [
+        'role' => 'system',
+        'content' => $ai_prompt
+    ]
+];
+$chat_messages_tail = array_slice($chat_messages, -4, 4);
 $chat_messages = array_merge($chat_messages_head, $chat_messages_tail);
-
-
-$chat_messages = array_filter($chat_messages, function ($msg) {
-    return $msg['content'] !== null;
-});
-
 
 $chat_messages = array_map(function ($message) {
     return [
@@ -124,10 +122,7 @@ $chat_messages = array_map(function ($message) {
         "content" => $message["content"]
     ];
 }, $chat_messages);
-
 $chat_messages = remove_duplicate_messages($chat_messages);
-
-
 
 $header = [
     "Authorization: Bearer " . $API_KEY,

@@ -190,46 +190,60 @@ require_once("modules/customer/chat-session.php");
           <div class="row">
             <div class="cell">
               <div class="chat-frame">
-                  <?php
-                  function displayMessage($role, $name, $content, $datetime, $image = null, $display_avatar = false, $use_google_voice = false, $extra_class = '') {
-                  global $lang;
-                  ?>
-                      <div class="conversation-thread <?php echo $role == 'assistant' ? 'thread-ai' : 'thread-user'; ?> <?php echo $extra_class; ?>">
-                          <?php if ($display_avatar && $role == 'assistant') { ?>
-                              <div class="user-image"><img onerror="this.src='<?php echo @$base_url;?>/img/no-image.svg'" src="<?php echo @$base_url;?>/public_uploads/<?php echo $image; ?>" alt="<?php echo $name; ?>" title="<?php echo $name; ?>"></div>
-                          <?php } ?>
-                          <div class="message-container">
-                              <div class="message-info">
-                                  <button class="copy-text" onclick="copyText(this)"><img src="<?php echo @$base_url;?>/img/copy.svg"> <span class="label-copy-code"><?php echo $lang['copy_text1']; ?></span></button>
-                                  <?php if ($use_google_voice) { ?>
-                                      <div class="chat-audio"><img data-play="false" src="<?php echo @$base_url;?>/img/btn_tts_play.svg"></div>
-                                  <?php } ?>
-                                  <div class="user-name"><h5><?php echo $name; ?></h5></div>
-                                  <div class="message-text"><div class="chat-response"><?php echo $content; ?></div></div>
-                                  <div class="date-chat"><img src="<?php echo @$base_url;?>/img/icon-clock.svg"> <?php echo $datetime; ?></div>
-                              </div>
-                          </div>
-                      </div>
-                      <?php
-                  }
-                  ?>
+                <?php
+                function displayMessage($role, $name, $content, $dall_e_array, $datetime, $image = null, $display_avatar = false, $use_google_voice = false, $extra_class = '') {
+                    global $lang;
+                    global $base_url;
+
+                    $isImageBlock = false;
+                    $json_array = json_decode($dall_e_array, true);
+                    if (json_last_error() === JSON_ERROR_NONE && isset($json_array['data'])) {
+                        $content = '<p><strong class="ia-image-prompt-label">'.$content.'</strong></p><div class="wrapper-image-ia image_ia_' . time() . '">';
+                        foreach ($json_array['data'] as $item) {
+                            if (isset($item['url'])) {
+                                $imageName = $item['url'];
+                                $content .= '<div class="image-ia"><img onerror="this.src=\'' . $base_url . '/img/no-image.svg\'" src="' . $base_url . '/public_uploads/dalle/' . $imageName . '"></div>';
+                                $isImageBlock = true;
+                            }
+                        }
+                        $content .= '</div>';
+                    }
+                    ?>
+                        <div class="conversation-thread <?php echo $role == 'assistant' ? 'thread-ai' : 'thread-user'; ?> <?php echo $extra_class; ?>">
+                            <?php if ($display_avatar && $role == 'assistant') { ?>
+                                <div class="user-image"><img onerror="this.src='<?php echo $base_url;?>/img/no-image.svg'" src="<?php echo $base_url;?>/public_uploads/<?php echo $image; ?>" alt="<?php echo $name; ?>" title="<?php echo $name; ?>"></div>
+                            <?php } ?>
+                            <div class="message-container">
+                                <div class="message-info">
+                                    <?php if (!$isImageBlock) { ?>  
+                                        <button class="copy-text" onclick="copyText(this)"><img src="<?php echo $base_url;?>/img/copy.svg"> <span class="label-copy-code"><?php echo $lang['copy_text1']; ?></span></button>
+                                        <?php if ($use_google_voice) { ?>
+                                            <div class="chat-audio"><img data-play="false" src="<?php echo $base_url;?>/img/btn_tts_play.svg"></div>
+                                        <?php } ?>
+                                    <?php } ?>
+                                    <div class="user-name"><h5><?php echo $role == 'assistant' ? $name : $lang['you']; ?></h5></div>
+                                    <div class="message-text"><div class="chat-response"><?php echo removeCustomInput($content); ?></div></div>
+                                    <div class="date-chat"><img src="<?php echo $base_url;?>/img/icon-clock.svg"> <?php echo $datetime; ?></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <?php } ?>
 
                   <div id="overflow-chat">
 
                       <?php if (empty($_SESSION['history'][$AI_ID])) : ?>
-                        
-                          <?php displayMessage('assistant', $AI->name, $AI->welcome_message, date("d/m/Y, H:i:s"), $AI->image, $AI->display_avatar, $AI->use_google_voice); ?>
-
+                          <?php displayMessage('assistant', $AI->name, $AI->welcome_message, null, date("d/m/Y, H:i:s"), $AI->image, $AI->display_avatar, $AI->use_google_voice,null); ?>
                       <?php else : ?>
 
                       <?php
                           $counter = 0;
                           foreach ($_SESSION['history'][$AI_ID] as $message) :
                             if ($message['role'] != "system") {
-                              @$name = $message['role'] == 'assistant' ? $message['name'] : 'You';
-                              @$content = $message['role'] == 'assistant' ? $message['content'] : removeCustomInput($message['content']);
+                              @$name = $message['role'] == 'assistant' ? $message['name'] : $lang['you'];
+                              @$content = $message['role'] == 'assistant' ? $message['content'] : $message['content'];
                               @$extra_class = $counter > 1 ? 'conversation-thread-flow' : '';
-                              displayMessage($message['role'], $AI->name, $content, $message['datetime'], $AI->image, $AI->display_avatar, $AI->use_google_voice, $extra_class);
+                              displayMessage($message['role'], $AI->name, $message['content'], $message['dall_e_array'], $message['datetime'], $AI->image, $AI->display_avatar, $AI->use_google_voice, $extra_class);
                             }
                             $counter++;
                           
@@ -307,7 +321,7 @@ require_once("modules/customer/chat-session.php");
                   <div><b class='wait'><?php echo $lang['wait']; ?></b> <span></span>  <b class='is_typing'><?php echo $lang['is_typing']; ?></b></div>
                 </span>
 
-                
+              
                 <textarea name="chat" id="chat" placeholder="<?php echo $lang['input_placeholder']; ?>" minlength="<?php echo $AI->chat_minlength; ?>" maxlength="<?php echo $AI->chat_maxlength; ?>"></textarea>
                 <?php if($AI->display_mic){?>
                 <img src="<?php echo $base_url; ?>/img/mic-start.svg" id="microphone-button">

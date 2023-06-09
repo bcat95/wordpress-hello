@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Nunito+Sans:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="<?php echo $bootstrapCSS; ?>" rel="stylesheet">
-    <link href="<?php echo $base_url; ?>/style/app.css?v1-1" rel="stylesheet">
+    <link href="<?php echo $base_url; ?>/style/app.css?v1-2" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/style/highlight.min.css" />    
     <link rel="stylesheet" href="<?php echo $base_url; ?>/style/highlight.dark.min.css" />
     <link rel="stylesheet" href="<?php echo $base_url; ?>/style/toastr.min.css" />
@@ -23,13 +23,7 @@
     <link itemprop="url" href="<?php echo $base_url; ?>/img/thumb.jpg">
     <link itemprop="thumbnailUrl" href="<?php echo $base_url; ?>/img/thumb.jpg">
     <meta name="theme-color" content="#1995f0">
-    <meta property="og:locale"          content="vi_VN" />
-    <meta property="og:type"            content="website" />
-    <meta property="og:title"           content="Cố vấn AI bởi ChatGPT" />
-    <meta property="og:description"     content="Giải pháp thông minh cho nhu cầu thực tế của bạn. Với chuyên môn trong các lĩnh vực như thiết kế, viết lách, mạng xã hội và nhiều hơn nữa, đội ngũ của chúng tôi có thể cung cấp cho bạn các giải pháp thông minh mang lại kết quả thực tế." />
-    <meta property="og:url"             content="https://mentor.chatgptvietnam.org" />
-    <meta property="og:site_name"       content="Cố vấn AI bởi ChatGPT">
-    <meta property="fb:app_id"          content="143893371929977" />
+    <meta property="og:title" content="AIgency" />
     <link rel="apple-touch-icon" sizes="180x180" href="<?php echo $base_url; ?>/fav/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<?php echo $base_url; ?>/fav/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="<?php echo $base_url; ?>/fav/favicon-16x16.png">
@@ -62,30 +56,30 @@
         color: <?php echo $theme_skin['footer_text_color_hover']; ?>;
       }
       .btn-sign-up{
-        background: <?php echo $theme_skin['btn_sign_up_background_color']; ?>;
-        color: <?php echo $theme_skin['btn_sign_up_text_color']; ?>;
-        border: 1px solid <?php echo $theme_skin['btn_sign_up_border_color']; ?>;
+          background: <?php echo $theme_skin['btn_sign_up_background_color']; ?>;
+          color: <?php echo $theme_skin['btn_sign_up_text_color']; ?>;
+          border: 1px solid <?php echo $theme_skin['btn_sign_up_border_color']; ?>;
       }      
       .btn-sign-up:hover, .btn-sign-up:active, .btn-sign-up:focus{
-        background: <?php echo $theme_skin['btn_sign_up_background_color_hover']; ?>;
-        color: <?php echo $theme_skin['btn_sign_up_text_color_hover']; ?>;
-        border: 1px solid  <?php echo $theme_skin['btn_sign_up_border_color_hover']; ?>;
+          background: <?php echo $theme_skin['btn_sign_up_background_color_hover']; ?>;
+          color: <?php echo $theme_skin['btn_sign_up_text_color_hover']; ?>;
+          border: 1px solid  <?php echo $theme_skin['btn_sign_up_border_color_hover']; ?>;
       }
       .btn-sign-in{
-        background: <?php echo $theme_skin['btn_sign_in_background_color']; ?>;
-        color: <?php echo $theme_skin['btn_sign_in_text_color']; ?>;
-        border: 1px solid <?php echo $theme_skin['btn_sign_in_border_color']; ?>;
+          background: <?php echo $theme_skin['btn_sign_in_background_color']; ?>;
+          color: <?php echo $theme_skin['btn_sign_in_text_color']; ?>;
+          border: 1px solid <?php echo $theme_skin['btn_sign_in_border_color']; ?>;
       }      
       .btn-sign-in:hover, .btn-sign-in:active, .btn-sign-in:focus{
-        background: <?php echo $theme_skin['btn_sign_in_background_color_hover']; ?>;
-        color: <?php echo $theme_skin['btn_sign_in_text_color_hover']; ?>;
-        border: 1px solid  <?php echo $theme_skin['btn_sign_in_border_color_hover']; ?>;
+          background: <?php echo $theme_skin['btn_sign_in_background_color_hover']; ?>;
+          color: <?php echo $theme_skin['btn_sign_in_text_color_hover']; ?>;
+          border: 1px solid  <?php echo $theme_skin['btn_sign_in_border_color_hover']; ?>;
       }      
       .primary-menu li a{
-        color: <?php echo $theme_skin['header_menu_links_color']; ?> !important;
+          color: <?php echo $theme_skin['header_menu_links_color']; ?> !important;
       }
       .primary-menu li a:hover{
-        color: <?php echo $theme_skin['header_menu_links_color_hover']; ?> !important;
+          color: <?php echo $theme_skin['header_menu_links_color_hover']; ?> !important;
       }
       .primary-menu li a.nav-link-effect::before {
         background-color: <?php echo $theme_skin['header_menu_links_color_effect_hover']; ?>;
@@ -105,16 +99,16 @@
       }.offcanvas-custom {
         background: <?php echo $theme_skin['mobile_background_color']; ?>;
       }
-      header .btn-close span{
+      header .btn-close span, header .bi-list{
         color: <?php echo $theme_skin['mobile_btn_close_color']; ?>;
       }
-    </style>
-    <link href="/style/bcat.css?v=230529" rel="stylesheet">
-    <script defer src="/app-load.js?v=230526"></script>
+
+      
+    </style>  
   </head>
   <body <?php if(isset($mobile_bg) && $mobile_bg) echo 'class="mobile-body"'; if(isset($bg_white) && $bg_white) echo 'class="bg-white"'; ?>>
 
-  <div id="loading">
+  <div id="loading" style="display:none !important">
       <div class="spinner-border text-light spinner" role="status"></div>  
   </div>
 
@@ -129,9 +123,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-light nav-mobile">
           <button class="navbar-toggler ms-auto custom-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" aria-controls="navbarOffcanvas">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
+            <i class="bi bi-list fs-1"></i>
           </button>
           <div class="offcanvas offcanvas-custom offcanvas-end" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel">
             <div class="d-lg-none d-md-none">

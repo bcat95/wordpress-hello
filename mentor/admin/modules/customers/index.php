@@ -29,7 +29,11 @@ require_once(__DIR__."/../../helpers/message-session.php");
             <?php foreach ($get as $show) {?>
             <tr data-id="<?php echo $show->id; ?>">
               <td><?php echo $show->name; ?></td>
+              <?php if($config->demo_mode){?>
+              <td><span class="badge bg-danger">Email will not be shown in demo mode</span></td>
+              <?php }else{ ?>   
               <td><?php echo $show->email; ?></td>
+              <?php } ?>
               <td><?php echo $show->total_messages; ?></td>
               <td><?php echo $show->total_threads; ?></td>
               <td><?php echo number_format($show->credits, 0, ',', '.'); ?></td>

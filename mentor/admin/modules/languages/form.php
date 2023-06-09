@@ -879,6 +879,13 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 						  <span>Button Chat now</span>
 						  <input name="btn_customer_chat_now" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['btn_customer_chat_now'] ?? '');} ?>">
 						</label>
+					</div>	
+
+					<div class="col-lg-4">
+						<label class="mb-2 col-12">
+						  <span>Last message</span>
+						  <input name="last_message" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['last_message'] ?? '');} ?>">
+						</label>
 					</div>					
 
 				</div>
@@ -1045,63 +1052,63 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 
 					<div class="col-lg-4">
 						<label class="mb-2 col-12">
-						  <span>card_declined</span>
+						  <span>Payment Refused</span>
 						  <input name="card_declined" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['card_declined'] ?? '');} ?>">
 						</label>
 					</div>	
 
 					<div class="col-lg-4">
 						<label class="mb-2 col-12">
-						  <span>expired_card</span>
+						  <span>Expired Card</span>
 						  <input name="expired_card" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['expired_card'] ?? '');} ?>">
 						</label>
 					</div>	
 
 					<div class="col-lg-4">
 						<label class="mb-2 col-12">
-						  <span>incorrect_cvc</span>
+						  <span>Incorrect CVC</span>
 						  <input name="incorrect_cvc" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['incorrect_cvc'] ?? '');} ?>">
 						</label>
 					</div>	
 
 					<div class="col-lg-4">
 						<label class="mb-2 col-12">
-						  <span>processing_error</span>
+						  <span>Processing error</span>
 						  <input name="processing_error" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['processing_error'] ?? '');} ?>">
 						</label>
 					</div>				
 
 					<div class="col-lg-4">
 						<label class="mb-2 col-12">
-						  <span>incorrect_number</span>
+						  <span>Incorrect Number</span>
 						  <input name="incorrect_number" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['incorrect_number'] ?? '');} ?>">
 						</label>
 					</div>
 
 					<div class="col-lg-4">
 						<label class="mb-2 col-12">
-						  <span>processing</span>
+						  <span>Processing</span>
 						  <input name="processing" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['processing'] ?? '');} ?>">
 						</label>
 					</div>		
 
 					<div class="col-lg-4">
 						<label class="mb-2 col-12">
-						  <span>abandoned_checkout</span>
+						  <span>Abandoned Checkout</span>
 						  <input name="abandoned_checkout" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['abandoned_checkout'] ?? '');} ?>">
 						</label>
 					</div>
 					
 					<div class="col-lg-4">
 						<label class="mb-2 col-12">
-						  <span>awaiting_payment</span>
+						  <span>Awaiting payment</span>
 						  <input name="awaiting_payment" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['awaiting_payment'] ?? '');} ?>">
 						</label>
 					</div>
 
 					<div class="col-lg-4">
 						<label class="mb-2 col-12">
-						  <span>succeeded</span>
+						  <span>Payment accept</span>
 						  <input name="succeeded" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['succeeded'] ?? '');} ?>">
 						</label>
 					</div>
@@ -1292,6 +1299,13 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 						<label class="mb-2 col-12">
 						  <span>The payment method has not been defined</span>
 						  <input name="error_payment_not_defined" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['error_payment_not_defined'] ?? '');} ?>">
+						</label>
+					</div>
+
+					<div class="col-lg-4">
+						<label class="mb-2 col-12">
+						  <span>DALL-E requires login message</span>
+						  <input name="dalle_require_login" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($translations_array['dalle_require_login'] ?? '');} ?>">
 						</label>
 					</div>
 

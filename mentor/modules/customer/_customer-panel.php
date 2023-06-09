@@ -6,11 +6,19 @@ require_once("customer-restrict.php");
 require_once("../../inc/includes.php");
 $getCustomerChat = $messages->getPromptByIdUser($_SESSION['id_customer']);
 $getCustomerChatCount = $getCustomerChat->rowCount();
+
 if(isset($_REQUEST['action']) && $_REQUEST['action'] == "get-chats"){
   $getChatBySlug = $prompts->getBySlug($_REQUEST['slug']);
   if($getChatBySlug){
-    $getThreads = $messages->getThreadByIdUserAndPrompt($_SESSION['id_customer'],$getChatBySlug->id);
-    $countThreads = $getThreads->rowCount();
+    $getThreads = $messages->getThreadByIdUserAndPrompt((int) $_SESSION['id_customer'],(int) $getChatBySlug->id);
+
+
+    //var_dump($getThreads);
+    if($getThreads){
+      $countThreads = $getThreads->rowCount();
+    }else{
+      $countThreads = 0;
+    }
   }else{
     header("Location:".$base_url."/panel");
     die();
@@ -76,13 +84,14 @@ require_once("../../inc/header.php");
               <ul class="list-group">
                 <?php 
                   $n = 1;
+                  if($getThreads){
                   foreach ($getThreads as $showThreads){
                   $thread_link = $base_url."/chat/".$showThreads->slug."?chat=".$showThreads->id_thread;
                 ?>
                 <li class="list-group-item justify-content-between align-items-center">
                   <div class="ms-2 me-auto">
                     <strong class="color-blue"><i class="bi bi-chat-left"></i> <?php echo $lang['chat_label_list']; ?> <?php echo $countThreads - $n + 1;?></strong><br>
-                    <b>Last message:</b> <?php echo truncateText($showThreads->last_message_content,150); ?><br>
+                    <b><?php echo isset($lang['last_message']) && $lang['last_message'] !== '' ? $lang['last_message'] : ''; ?></b> <?php echo truncateText(removeCustomInput($showThreads->last_message_content),150); ?><br>
                   </div>
                   <div class="mt-2">
                     <a class="btn btn-success btn-sm" href="<?php echo $thread_link; ?>"><i class="bi bi-chat-dots"></i> <?php echo $lang['btn_customer_chat_now']; ?></a>
@@ -115,6 +124,7 @@ require_once("../../inc/header.php");
                   </div>
                 </li>
                 <?php $n++;} ?>
+              <?php } ?>
               </ul>              
             </div>
           </div>

@@ -22,7 +22,11 @@
         foreach ($getRegistrationUsers as $showRegistrationUsers) {?>
           <tr>
             <td><?php echo $showRegistrationUsers->name; ?></td>
+            <?php if($config->demo_mode){?> 
+            <td><span class="badge bg-danger">Email will not be shown in demo mode</span></td>
+            <?php }else{ ?>
             <td><?php echo $showRegistrationUsers->email; ?></td>
+            <?php } ?>
             <td><?php echo $showRegistrationUsers->created_at; ?></td>
             <td><?php echo $showRegistrationUsers->credits; ?></td>
             <td><?php echo $showRegistrationUsers->total_threads; ?></td>

@@ -45,8 +45,10 @@ function url(){
 // Function to remove custom input from a given text.
 // This removes any text starting with '↵↵' and ending with a period (inclusive).
 function removeCustomInput($text) {
-    $clean_text = preg_replace('/↵↵.*?\./s', '', $text);
-    $clean_text = str_replace('↵↵', '', $clean_text);
+    // remove everything after &crarr;&crarr;
+    $clean_text = preg_replace('/&crarr;&crarr;[\s\S]*/', '', $text);
+    // then remove everything after ↵↵;
+    $clean_text = preg_replace('/↵↵[\s\S]*/', '', $clean_text);
     return $clean_text;
 }
 
