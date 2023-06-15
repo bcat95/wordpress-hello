@@ -1,0 +1,19 @@
+{
+    "name": "Cố vấn AI",
+    "short_name": "Giải pháp thông minh cho nhu cầu thực tế của bạn.",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "fav/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "fav/png"
+        }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone"
+}
