@@ -21,9 +21,12 @@ if(!isset($_SESSION['id_customer']) || is_null($_SESSION['id_customer'])) {
 $unique_value = time() . mt_rand(); 
 $md5_hash = md5($unique_value);
 
+
 $getCustomer = $customers->get($_SESSION['id_customer']);
 
+
 if(isset($_GET['payment_method'])){
+
 
     //Set fields to checkout
     $_POST['id_customer'] = $_SESSION['id_customer'];
@@ -36,6 +39,7 @@ if(isset($_GET['payment_method'])){
 
   //Payment by stripe
   if($_GET['payment_method'] == "stripe"){
+
 
     // Cria um novo cliente no Stripe
     $customer = \Stripe\Customer::create([
@@ -120,6 +124,8 @@ if(isset($_GET['payment_method'])){
     }
 
   }
+
+
 
 }else{
   redirect($base_url.'/pricing', $lang['error_payment_not_defined'], 'error');

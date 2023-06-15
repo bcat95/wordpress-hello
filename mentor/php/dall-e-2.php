@@ -12,6 +12,7 @@ $model = "image-alpha-001";
 $num_images = (int) $config->dalle_generated_img_count;
 $size = $config->dalle_img_size;
 
+
 if(!$isLogged){
     echo json_encode([
         "status" => 0,
@@ -33,8 +34,6 @@ $AI = $prompts->get($ai_id);
 $ai_name = $AI->name;
 $total_characters = $config->dalle_spend_credits;
 $ai_id = $AI->id;
-
-
 
 
 // Verifica se o array $_SESSION["history"][$ai_id] existe
