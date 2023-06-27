@@ -31,7 +31,6 @@ $use_bootstrap_icons = true;
         </div>
     </div> 
 </section>
-<!-- End of the Hero Section -->
 
 <!-- Start of the AI Team Section -->
 <section id="ai-team">
@@ -75,7 +74,6 @@ $use_bootstrap_icons = true;
                             <a href="<?php echo $base_url; ?>/chat/<?php echo $showPrompts->slug; ?>">
                                 <span class="btn btn-primary btn-md start-chat"><i class="bi bi-chat"></i> <?php echo $lang['chat_now']; ?></span>
                             </a>
-                            <?php if ($showPrompts->demo) echo '<a target="_blank" class="prompts-demo" href="'.$showPrompts->demo.'">xem ví dụ</a>';?>
                         </div>
                     </div>
                 </div>

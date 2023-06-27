@@ -44,6 +44,7 @@ if($_REQUEST['format'] == "txt"){
 	fwrite($tempFile, "{$currentDateTime}\n\n");
 
 	foreach ($getMessages as $showMessages) {
+        $showMessages->content = removeCustomInput($showMessages->content);
 	    if ($showMessages->role != 'system') {
 	        // Escreve a mensagem no arquivo temporário com o nome personalizado
 	        $name = $showMessages->role == 'assistant' ? $ai_name : $user_name;
@@ -95,6 +96,7 @@ if($_REQUEST['format'] == "pdf"){
     $pdf->Write(0, $currentDateTime."\n\n", '', 0, 'L', true, 0, false, false, 0);
 
 	foreach ($getMessages as $showMessages) {
+        $showMessages->content = removeCustomInput($showMessages->content);
 	    if ($showMessages->role != 'system') {
 	        $name = $showMessages->role == 'assistant' ? $ai_name : $user_name;
 	        $pdf->SetFont('cid0jp', 'B', 10);
@@ -129,6 +131,7 @@ if ($_REQUEST['format'] == "docx") {
 
     // Escreve as mensagens no documento
     foreach ($getMessages as $showMessages) {
+        $showMessages->content = removeCustomInput($showMessages->content);
         if ($showMessages->role != 'system') {
             $name = $showMessages->role == 'assistant' ? $ai_name : $user_name;
             $section->addText($name . ": " . $showMessages->content);

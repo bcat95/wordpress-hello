@@ -401,7 +401,7 @@ window.onload = function() {
     }
 
     nameInput.oninput = function() {
-        // slugInput.value = slugify(this.value);
+        slugInput.value = slugify(this.value);
     }
 
     function slugify(text) {

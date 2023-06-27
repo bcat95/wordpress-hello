@@ -8,6 +8,7 @@ body{
     background: #F7FCFF;
     overflow-x: hidden;
     font-family: 'Nunito Sans', sans-serif;
+    padding-right:0 !important;
 }
 header{
     background: linear-gradient(180deg, #1995F0 0%, #0072C6 100%);
@@ -96,7 +97,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .hero-call-action-img img{
     position: relative;
-    bottom: -20px;    
+    bottom: -22px;    
 }
 .default-title{
     font-weight: bold;
@@ -197,7 +198,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .ai-contacts-scroll{
     overflow-y: auto;
-    height: 762px;
+    height: 690px;
     border-radius: 5px;
 }
 .ai-contacts-scroll a{
@@ -442,7 +443,7 @@ h1, h2, h3, h4, h5, h6 {
     gap: 20px;
     position: relative;
 }
-.chat-input textarea{
+.chat-input textarea, .chat-input input{
     width: 100%;
     margin-bottom: 0;
     border: 1px solid #E0E4E7;
@@ -453,7 +454,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0.5em 1em;
     font-size: 18px;
 }
-.chat-input textarea:focus{
+.chat-input textarea:focus, .chat-input input:focus{
     border: 1px solid #a5d8ff;
 }
 
@@ -1052,7 +1053,8 @@ header .btn-close span{
     color: #FFF;
 }
 #loading{
-    background: linear-gradient(180deg, #1995F0 0%, #0072C6 100%);
+    background-color: #202020;
+    background-image: linear-gradient(147deg, #000000 0%, #212121 74%);
     position: fixed;
     z-index: 999;
     width: 100%;
@@ -1071,6 +1073,18 @@ header .btn-close span{
 }
 .ai-chat-top .dropdown-center{
     display: flex;
+}
+.theme-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1em;    
+}
+.theme-icon i{
+    color: #FFF;
+}
+.theme-icon:hover{
+    cursor: pointer;
 }
 /*/ Small devices (landscape phones, 576px and up)/*/
 @media (max-width: 767px){
@@ -1237,7 +1251,7 @@ header .btn-close span{
         padding-left: 10px;
         height: auto;
         padding-bottom: 7em;
-        padding-top: 5em;
+        padding-top: 6em;
     }
     .copy-text{
         display: block;
@@ -1265,7 +1279,7 @@ header .btn-close span{
         z-index: 2;
         box-shadow: 1px -6px 58px 1px #0069b778;
     }
-    .chat-input textarea{
+    .chat-input textarea, .chat-input input{
         padding:5px;
         font-size: 16px;
         height: 46px;

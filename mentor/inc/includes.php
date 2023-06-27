@@ -87,7 +87,7 @@ $base_url = $base_url;
 
 if ($getDefaultLanguage->lang === 'ar') {
   $dir = 'rtl';
-  $bootstrapCSS = 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css';
+  $bootstrapCSS = '/style/bootstrap.rtl.min.css';
 } else {
   $dir = 'ltr';
   $bootstrapCSS = $base_url . '/style/bootstrap.min.css';

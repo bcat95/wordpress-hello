@@ -259,45 +259,48 @@ require_once("modules/customer/chat-session.php");
 
                 <!--start-widget--options--input-->
                 <div class="col col-options-input">
+                <?php if($AI->display_prompts_output || $AI->show_prompts_tone || $AI->display_prompts_writing){?>
                 <div class="btn-options-input"><div class="arrow-up"></div></div>
+                <?php } ?>
 
-                  <?php if($getPromptsOutputCount > 0){?>
-                  <div class="form-floating form-f-chat" id="display_chat_language_output">
-                    <select class="form-select" id="selectLanguage">
-                      <option value=""><?php echo $lang['label_default']; ?></option>
-                      <?php foreach ($getPromptsOutput as $show_prompts_output) {?>
-                      <option value="<?php echo $show_prompts_output->value; ?>"><?php echo $show_prompts_output->name; ?></option>
-                      <?php } ?>
-                    </select> 
-                    <label for="selectLanguage"><?php echo $lang['label_display_chat_language_output']; ?></label>
-                  </div>
-                  <?php } ?>
-
-                  <?php if($getPromptsToneCount > 0){?>
-                  <div class="form-floating form-f-chat" id="display_chat_tone">
-                    <div class="form-floating form-f-chat">
-                      <select class="form-select" id="selectTone">
-                      <option value=""><?php echo $lang['label_default']; ?></option>
-                      <?php foreach ($getPromptsTone as $show_prompts_tone) {?>
-                      <option value="<?php echo $show_prompts_tone->value; ?>"><?php echo $show_prompts_tone->name; ?></option>
-                      <?php } ?>                      
-                      </select>
-                      <label for="selectTone"><?php echo $lang['label_display_chat_tone']; ?></label>
+                  <div style="<?php echo ($getPromptsOutputCount > 0 && $AI->display_prompts_output) ? 'display: block;' : 'display: none;'; ?>">
+                    <div class="form-floating form-f-chat" id="display_chat_language_output">
+                      <select class="form-select" id="selectLanguage">
+                        <option value=""><?php echo $lang['label_default']; ?></option>
+                        <?php foreach ($getPromptsOutput as $show_prompts_output) {?>
+                        <option <?php if($AI->id_prompts_output_default == $show_prompts_output->id) echo "selected"; ?> value="<?php echo $show_prompts_output->value; ?>"><?php echo $show_prompts_output->name; ?></option>
+                        <?php } ?>
+                      </select> 
+                      <label for="selectLanguage"><?php echo $lang['label_display_chat_language_output']; ?></label>
                     </div>
                   </div>
-                  <?php } ?>
 
-                  <?php if($getPromptsWritingCount > 0){?>
-                  <div class="form-floating form-f-chat" id="display_chat_writing_style">
-                    <select class="form-select" id="selectWritingStyle">
-                      <option value=""><?php echo $lang['label_default']; ?></option>
-                      <?php foreach ($getPromptsWriting as $show_prompts_writing) {?>
-                      <option value="<?php echo $show_prompts_writing->value; ?>"><?php echo $show_prompts_writing->name; ?></option>
-                      <?php } ?>                      
-                    </select>
-                    <label for="selectWritingStyle"><?php echo $lang['label_display_chat_writing_style']; ?></label>
-                  </div>                  
-                  <?php } ?>
+                  <div style="<?php echo ($getPromptsToneCount > 0 && $AI->display_prompts_tone) ? 'display: block;' : 'display: none;'; ?>">
+                    <div class="form-floating form-f-chat" id="display_chat_tone">
+                      <div class="form-floating form-f-chat">
+                        <select class="form-select" id="selectTone">
+                        <option value=""><?php echo $lang['label_default']; ?></option>
+                        <?php foreach ($getPromptsTone as $show_prompts_tone) {?>
+                        <option <?php if($AI->id_prompts_tone_default == $show_prompts_tone->id) echo "selected"; ?> value="<?php echo $show_prompts_tone->value; ?>"><?php echo $show_prompts_tone->name; ?></option>
+                        <?php } ?>                      
+                        </select>
+                        <label for="selectTone"><?php echo $lang['label_display_chat_tone']; ?></label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="<?php echo ($getPromptsWritingCount > 0 && $AI->display_prompts_writing) ? 'display: block;' : 'display: none;'; ?>">
+                    <div class="form-floating form-f-chat" id="display_chat_writing_style">
+                      <select class="form-select" id="selectWritingStyle">
+                        <option value=""><?php echo $lang['label_default']; ?></option>
+                        <?php foreach ($getPromptsWriting as $show_prompts_writing) {?>
+                        <option <?php if($AI->id_prompts_writing_default == $show_prompts_writing->id) echo "selected"; ?> value="<?php echo $show_prompts_writing->value; ?>"><?php echo $show_prompts_writing->name; ?></option>
+                        <?php } ?>                      
+                      </select>
+                      <label for="selectWritingStyle"><?php echo $lang['label_display_chat_writing_style']; ?></label>
+                    </div>
+                  </div>
+
                 </div>                
                 <!--end-widget--options--input-->
               

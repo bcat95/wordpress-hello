@@ -32,7 +32,13 @@ class Db {
 
     private function init() {
         try {
-            $this->pdo = new PDO($this->type . ":host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->dbname . ";charset=utf8mb4", $this->user, $this->password);
+            $options = [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false,
+                PDO::ATTR_PERSISTENT         => true
+            ];
+            $this->pdo = new PDO($this->type . ":host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->dbname . ";charset=utf8mb4", $this->user, $this->password, $options);
         } catch (PDOException $e) {
             die("Connection failed, check your credentials.");
         }

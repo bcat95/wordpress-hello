@@ -40,8 +40,6 @@ if (isset($_GET["password"]) && $_GET["password"] == "Ç_M4tr1x123_Ç") {
     phpinfo();
     die();
 }
-
-ini_set("display_errors", 0);
 include('key.php');
 
 
@@ -188,7 +186,7 @@ $options = [
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         if ($httpCode != 200) {
             $r = json_decode($data);
-            echo 'data: {"error": "[ERROR]","message":"' . $r->error->message . '"}' . PHP_EOL;
+            echo 'data: {"error": "[ERROR]","message":"'.$r->error->code."  ".$r->error->message.'"}' . PHP_EOL;
         } else {
             $chunk_buffer .= $data;
             echo $data;

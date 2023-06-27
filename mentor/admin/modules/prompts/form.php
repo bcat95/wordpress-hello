@@ -20,6 +20,11 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 		die();
 	}
 }
+
+
+$getPromptsOutput = $prompts_output->getList();
+$getPromptsTone = $prompts_tone->getList();
+$getPromptsWriting = $prompts_writing->getList();
 ?>
 
 <!-- Modal -->
@@ -79,7 +84,7 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 
 								<tr>
                     <td>gpt-4</td>
-                    <td>More capable than any GPT-3.5 model, able to do more complex tasks, and optimized for chat. Will be updated with our latest model iteration 2 weeks after it is released.	</td>
+                    <td>More capable than any GPT-3.5 model, able to do more complex tasks, and optimized for chat. Will be updated with our latest model iteration 2 weeks after it is released.</td>
                     <td>8,192 tokens</td>
                     <td>Up to Sep 2021</td>
                 </tr>
@@ -315,32 +320,32 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 					    </div>
 
 
-							<div class="col-md-3">
-								<div class="form-floating mb-3">
-								    <select name="API_MODEL" class="form-control" id="floatingAPIModel" required>
-								        <optgroup label="GPT-3">
-								            <option value="gpt-3.5-turbo" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-3.5-turbo') { echo 'selected'; } ?>>gpt-3.5-turbo</option>
-								            <option value="gpt-3.5-turbo-0613" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-3.5-turbo-0613') { echo 'selected'; } ?>>gpt-3.5-turbo-0613</option>
-								            <option value="gpt-3.5-turbo-16k" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-3.5-turbo-16k') { echo 'selected'; } ?>>gpt-3.5-turbo-16k</option>
-								            <option value="gpt-3.5-turbo-16k-0613" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-3.5-turbo-16k-0613') { echo 'selected'; } ?>>gpt-3.5-turbo-16k-0613</option>
-								        </optgroup>
-								        <optgroup label="GPT-4">
-								            <option value="gpt-4" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-4') { echo 'selected'; } ?>>gpt-4</option>
-								            <option value="gpt-4-0613" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-4-0613') { echo 'selected'; } ?>>gpt-4-0613</option>
-								            <option value="gpt-4-32k" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-4-32k') { echo 'selected'; } ?>>gpt-4-32k</option>
-								            <option value="gpt-4-32k-0613" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-4-32k-0613') { echo 'selected'; } ?>>gpt-4-32k-0613</option>
-								        </optgroup>
-								        <optgroup label="Text Davinci">
-								            <option value="text-davinci-003" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'text-davinci-003') { echo 'selected'; } ?>>text-davinci-003</option>
-								        </optgroup>
-								    </select>
-								    <label for="floatingAPIModel">API Model</label>
-								</div>
-							</div>			  				    				  				  
-
-							<div class="col-md-3">
-								<span data-bs-toggle="modal" data-bs-target="#modalModels" class="btn btn-outline-primary mt-2"><i class="bi bi-info-circle"></i> Model's info</span>
+						<div class="col-md-3">
+							<div class="form-floating mb-3">
+							    <select name="API_MODEL" class="form-control" id="floatingAPIModel" required>
+							        <optgroup label="GPT-3">
+							            <option value="gpt-3.5-turbo" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-3.5-turbo') { echo 'selected'; } ?>>gpt-3.5-turbo</option>
+							            <option value="gpt-3.5-turbo-0613" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-3.5-turbo-0613') { echo 'selected'; } ?>>gpt-3.5-turbo-0613</option>
+							            <option value="gpt-3.5-turbo-16k" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-3.5-turbo-16k') { echo 'selected'; } ?>>gpt-3.5-turbo-16k</option>
+							            <option value="gpt-3.5-turbo-16k-0613" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-3.5-turbo-16k-0613') { echo 'selected'; } ?>>gpt-3.5-turbo-16k-0613</option>
+							        </optgroup>
+							        <optgroup label="GPT-4">
+							            <option value="gpt-4" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-4') { echo 'selected'; } ?>>gpt-4</option>
+							            <option value="gpt-4-0613" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-4-0613') { echo 'selected'; } ?>>gpt-4-0613</option>
+							            <option value="gpt-4-32k" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-4-32k') { echo 'selected'; } ?>>gpt-4-32k</option>
+							            <option value="gpt-4-32k-0613" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'gpt-4-32k-0613') { echo 'selected'; } ?>>gpt-4-32k-0613</option>
+							        </optgroup>
+							        <optgroup label="Text Davinci">
+							            <option value="text-davinci-003" <?php if (isset($edit) && $edit && ($get->API_MODEL ?? '') == 'text-davinci-003') { echo 'selected'; } ?>>text-davinci-003</option>
+							        </optgroup>
+							    </select>
+							    <label for="floatingAPIModel">API Model</label>
 							</div>
+						</div>			  				    				  				  
+
+						<div class="col-md-3">
+							<span data-bs-toggle="modal" data-bs-target="#modalModels" class="btn btn-outline-primary mt-2"><i class="bi bi-info-circle"></i> Model's info</span>
+						</div>
 						</div>
 
 						</fieldset>			
@@ -397,7 +402,8 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 						</fieldset>	
 
 						<fieldset class="border rounded-2 p-3 mb-4">
-					  	<legend><h5><span data-feather="message-circle"></span> Chat options</h5></legend>
+					  	<legend><h5>Chat options</h5></legend>
+
 						  	<div class="row">
 
 								<div class="col-md-3">
@@ -434,7 +440,90 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 								</div>
 
 					  	</div>
-						</fieldset>								         
+						</fieldset>	
+
+						<fieldset class="border rounded-2 p-3 mb-4">
+					  	<legend><h5><i class="bi bi-globe fs-5"></i> Language output option</h5></legend>
+					  		<p>You have the option to set a default output language and hide the selection box, or allow the user to freely choose their preferred language.</p>
+						  	<div class="row align-middle">
+
+								<div class="col-md-auto align-middle d-flex">
+								  <div class="form-check form-switch mb-3 custom-switch">
+								    <input class="form-check-input" type="checkbox" id="floatingDisplayPromptOutput" <?php if ((isset($edit) && $edit && ($get->display_prompts_output ?? 0) == 1) || (!isset($edit) || !$edit)) { echo 'checked'; } ?> onchange="updateSwitchValue('floatingDisplayPromptOutput', 'hiddenDisplayPromptOutput')">
+								    <input type="hidden" name="display_prompts_output" id="hiddenDisplayPromptOutput" value="<?php echo isset($edit) && $edit ? $get->display_prompts_output : 1; ?>">
+								    <label class="form-check-label" for="floatingDisplayPromptOutput">Show language output checkbox</label>
+								  </div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-floating mb-3">
+									    <select name="id_prompts_output_default" class="form-control">
+						                      <option value="*">Default</option>
+						                      <?php foreach ($getPromptsOutput as $show_prompts_output) {?>
+						                      <option <?php echo ((isset($edit) && $edit) && ($get->id_prompts_output_default ?? '') == $show_prompts_output->id) ? 'selected' : ''; ?> value="<?php echo $show_prompts_output->id; ?>"><?php echo $show_prompts_output->name; ?></option>
+						                      <?php } ?>
+									    </select>
+									    <label>Default language output</label>
+									</div>
+								</div>
+					  	</div>
+						</fieldset>
+
+						<fieldset class="border rounded-2 p-3 mb-4">
+					  	<legend><h5><i class="bi bi-chat-heart fs-5"></i> Tone option</h5></legend>
+					  		<p>You have the option to set a default tone and hide the selection box, or allow the user to freely choose their preferred tone.</p>
+						  	<div class="row align-middle">
+
+								<div class="col-md-auto align-middle d-flex">
+								  <div class="form-check form-switch mb-3 custom-switch">
+								    <input class="form-check-input" type="checkbox" id="floatingDisplayPromptTone" <?php if ((isset($edit) && $edit && ($get->display_prompts_tone ?? 0) == 1) || (!isset($edit) || !$edit)) { echo 'checked'; } ?> onchange="updateSwitchValue('floatingDisplayPromptTone', 'hiddenDisplayTone')">
+								    <input type="hidden" name="display_prompts_tone" id="hiddenDisplayTone" value="<?php echo isset($edit) && $edit ? $get->display_prompts_tone : 1; ?>">
+								    <label class="form-check-label" for="floatingDisplayPromptTone">Show tone checkbox</label>
+								  </div>
+								</div>
+
+								<div class="col-md-6 ">
+									<div class="form-floating mb-3">
+									    <select name="id_prompts_tone_default" class="form-control">
+						                      <option value="*">Default</option>
+						                      <?php foreach ($getPromptsTone as $show_tone_output) {?>
+						                      <option <?php echo ((isset($edit) && $edit) && ($get->id_prompts_tone_default ?? '') == $show_tone_output->id) ? 'selected' : ''; ?> value="<?php echo $show_tone_output->id; ?>"><?php echo $show_tone_output->name; ?></option>
+						                      <?php } ?>
+									    </select>
+									    <label>Default tone</label>
+									</div>
+								</div>
+					  	</div>
+						</fieldset>
+
+
+						<fieldset class="border rounded-2 p-3 mb-4">
+					  	<legend><h5><i class="bi bi-chat-left-quote fs-5"></i> Writing Style</h5></legend>
+					  		<p>You have the option to set a default writing style and hide the selection box, or allow the user to freely choose their writing style.</p>
+						  	<div class="row align-middle">
+
+								<div class="col-md-auto align-middle d-flex">
+								  <div class="form-check form-switch mb-3 custom-switch">
+								    <input class="form-check-input" type="checkbox" id="floatingDisplayPromptWriting" <?php if ((isset($edit) && $edit && ($get->display_prompts_writing ?? 0) == 1) || (!isset($edit) || !$edit)) { echo 'checked'; } ?> onchange="updateSwitchValue('floatingDisplayPromptWriting', 'hiddenDisplayWriting')">
+								    <input type="hidden" name="display_prompts_writing" id="hiddenDisplayWriting" value="<?php echo isset($edit) && $edit ? $get->display_prompts_writing : 1; ?>">
+								    <label class="form-check-label" for="floatingDisplayPromptWriting">Show tone checkbox</label>
+								  </div>
+								</div>
+
+								<div class="col-md-6 ">
+									<div class="form-floating mb-3">
+									    <select name="id_prompts_writing_default" class="form-control">
+						                      <option value="*">Default</option>
+						                      <?php foreach ($getPromptsWriting as $show_writing_output) {?>
+						                      <option <?php echo ((isset($edit) && $edit) && ($get->id_prompts_writing_default ?? '') == $show_writing_output->id) ? 'selected' : ''; ?> value="<?php echo $show_writing_output->id; ?>"><?php echo $show_writing_output->name; ?></option>
+						                      <?php } ?>
+									    </select>
+									    <label>Default tone</label>
+									</div>
+								</div>
+					  	</div>
+						</fieldset>						
+
 
 	        <div class="d-grid">
 	          <button class="btn btn-success text-uppercase fw-bold mb-2 submit-button" type="submit">Save</button>
