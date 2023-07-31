@@ -28,32 +28,49 @@ if (!$get) {
 
           <div class="row">
 
+
+            <div class="col-md-12">
+              <p>You can also customize the appearance of the website with your own CSS by <a href="<?php echo $base_url."/admin/settings#nav-custom-code-css-tab"; ?>">clicking here</a>.</p>
+            </div>
+
             <div class="col-md-12">
               <fieldset class="border rounded-2 p-3 mb-4">
                 <legend><h5><i class="bi bi-card-image fs-5"></i> Hero/banner section homepage</h5></legend>
                   <div class="row align-middle">
 
-                    <div class="col-lg-4 col-md-4 col-12 mb-3">
-                    <h6>Logo (Recommended size 215x70, png or svg format)</h6>
-                      <div class="wrapper-image-preview-form preview-image-header-theme">
+                    <div class="col-lg-2 mb-3">
+                    <h6>Fav icon</h6>
+                      <i>Size 16x16<br>format: .ico</i>
+                      <div class="wrapper-image-preview-form preview-image-header-theme mt-2">
+                        <input name="image_fav" type="file" class="form-control" accept="image/*" onchange="loadPreviewImage(event, 'favUpload')">
+                        <img class="img-fluid" id="favUpload" src="<?php echo !empty($get->image_fav) ? $base_url . '/public_uploads/' . $get->image_fav : 'https://placehold.co/600x400?text=16+x+16'; ?>" onerror="this.src='https://placehold.co/600x400?text=16+x+16'">
+                      </div>
+                    </div>
+
+                    <div class="col-lg-2 mb-3">
+                    <h6>Logo</h6>
+                      <i>Size 215x70<br>format: png or svg</i>
+                      <div class="wrapper-image-preview-form preview-image-header-theme mt-2">
                         <input name="image_logo" type="file" class="form-control" accept="image/*" onchange="loadPreviewImage(event, 'logoUpload')">
-                        <img class="img-fluid" id="logoUpload" src="<?php echo !empty($get->image_logo) ? $base_url . '/public_uploads/' . $get->image_logo : '#'; ?>" onerror="this.src='<?php echo $base_url; ?>/img/placeholder_header-image.png'">
+                        <img class="img-fluid" id="logoUpload" src="<?php echo !empty($get->image_logo) ? $base_url . '/public_uploads/' . $get->image_logo : 'https://placehold.co/215x70'; ?>" onerror="this.src='https://placehold.co/215x70'">
                       </div>
                     </div>   
 
                     <div class="col-lg-4 col-md-4 col-12 mb-3">
                       <h6>Background Hero Image</h6>
-                      <div class="wrapper-image-preview-form preview-image-header-theme">
+                      <i>Size 2600x625,<br>format: jpg or webp</i>
+                      <div class="wrapper-image-preview-form preview-image-header-theme mt-2">
                         <input name="image_hero_background" type="file" class="form-control" accept="image/*" onchange="loadPreviewImage(event, 'heroBackgroundImagePreview')">
-                        <img class="img-fluid" id="heroBackgroundImagePreview" src="<?php echo !empty($get->image_hero_background) ? $base_url . '/public_uploads/' . $get->image_hero_background : '#'; ?>" onerror="this.src='<?php echo $base_url; ?>/img/placeholder_hero.jpg'">
+                        <img class="img-fluid" id="heroBackgroundImagePreview" src="<?php echo !empty($get->image_hero_background) ? $base_url . '/public_uploads/' . $get->image_hero_background : 'https://placehold.co/2600x625'; ?>" onerror="this.src='https://placehold.co/2600x625'">
                       </div>
                     </div>
 
                     <div class="col-lg-4 col-md-4 col-12 mb-3">
                     <h6>Hero Image</h6>
-                      <div class="wrapper-image-preview-form preview-image-header-theme">
+                    <i>Size 570x583,<br>format: png or webp</i>
+                      <div class="wrapper-image-preview-form preview-image-header-theme mt-2">
                         <input name="image_hero" type="file" class="form-control" accept="image/*" onchange="loadPreviewImage(event, 'heroImagePreview')">
-                        <img class="img-fluid" id="heroImagePreview" src="<?php echo !empty($get->image_hero) ? $base_url . '/public_uploads/' . $get->image_hero : '#'; ?>" onerror="this.src='<?php echo $base_url; ?>/img/placeholder_header-image.png'">
+                        <img class="img-fluid" id="heroImagePreview" src="<?php echo !empty($get->image_hero) ? $base_url . '/public_uploads/' . $get->image_hero : 'https://placehold.co/570x583'; ?>" onerror="this.src='https://placehold.co/570x583'">
                       </div>
                     </div>        
 
@@ -173,6 +190,43 @@ if (!$get) {
               </fieldset>               
             </div>
 
+            <div class="col-md-4">
+              <fieldset class="border rounded-2 p-3 mb-4">
+                <legend><h5><i class="bi bi-person-circle fs-5"></i> Primary Button (blue)</h5></legend>
+                  <div class="row align-middle">
+
+                    <div class="col">
+                      <ul class="list-group">
+                        <li class="list-group-item d-flex align-items-center"><input name="btn_primary_background_color" type="color" class="form-control form-control-color" value="<?php if(isset($edit) && $edit){echo ($theme_array['btn_primary_background_color'] ?? '');} ?>"> <span class="ms-2">Background color</span></li>
+                        <li class="list-group-item d-flex align-items-center"><input name="btn_primary_background_color_hover" type="color" class="form-control form-control-color" value="<?php if(isset($edit) && $edit){echo ($theme_array['btn_primary_background_color_hover'] ?? '');} ?>"> <span class="ms-2">Background color hover</span></li>
+                        <li class="list-group-item d-flex align-items-center"><input name="btn_primary_text_color" type="color" class="form-control form-control-color" value="<?php if(isset($edit) && $edit){echo ($theme_array['btn_primary_text_color'] ?? '');} ?>"> <span class="ms-2">Text color</span></li>
+                        <li class="list-group-item d-flex align-items-center"><input name="btn_primary_text_color_hover" type="color" class="form-control form-control-color" value="<?php if(isset($edit) && $edit){echo ($theme_array['btn_primary_text_color_hover'] ?? '');} ?>"> <span class="ms-2">Text color hover</span></li>
+                        
+                      </ul>                  
+                    </div>
+
+                  </div>
+              </fieldset>               
+            </div>            
+
+            <div class="col-md-4">
+              <fieldset class="border rounded-2 p-3 mb-4">
+                <legend><h5><i class="bi bi-person-circle fs-5"></i> AI Card style</h5></legend>
+                  <div class="row">
+                    <div class="col-12">
+                      <select name="ai_card_style" class="form-control">
+                        <option value="card-ai-theme-1" <?php if (isset($edit) && $edit && ($theme_array['ai_card_style'] ?? '') === 'card-ai-theme-1') { echo 'selected'; } ?>>Card Theme 1</option>
+                        <option value="card-ai-theme-2" <?php if (isset($edit) && $edit && ($theme_array['ai_card_style'] ?? '') === 'card-ai-theme-2') { echo 'selected'; } ?>>Card Theme 2</option>
+                      </select>                      
+                    </div>
+                    <div class="col-12">
+                        <img src="<?php echo $base_url; ?>/admin/img/card-style.jpg" class="img-fluid">
+                    </div>
+
+                  </div>
+              </fieldset>               
+            </div>
+
           </div>
 
           <div class="row">
@@ -184,7 +238,8 @@ if (!$get) {
 
                     <div class="col-lg-4 col-md-4 col-12 mb-3">
                       <h6>Background Sign in</h6>
-                      <div class="wrapper-image-preview-form">
+                      <i>Size 1300x1080<br>format: jpg or webp</i>
+                      <div class="wrapper-image-preview-form mt-2">
                         <input name="image_sign_in" type="file" class="form-control" accept="image/*" onchange="loadPreviewImage(event, 'backgroundSignIn')">
                         <img class="img-fluid" id="backgroundSignIn" src="<?php echo !empty($get->image_sign_in) ? $base_url . '/public_uploads/' . $get->image_sign_in : '#'; ?>" onerror="this.src='<?php echo $base_url; ?>/img/placeholder_1300_1080.jpg'">
                       </div>
@@ -192,7 +247,8 @@ if (!$get) {
 
                     <div class="col-lg-4 col-md-4 col-12 mb-3">
                       <h6>Background Sign up</h6>
-                      <div class="wrapper-image-preview-form">
+                      <i>Size 1300x1080<br>format: jpg or webp</i>
+                      <div class="wrapper-image-preview-form mt-2">
                         <input name="image_sign_up" type="file" class="form-control" accept="image/*" onchange="loadPreviewImage(event, 'backgroundSignUp')">
                         <img class="img-fluid" id="backgroundSignUp" src="<?php echo !empty($get->image_sign_up) ? $base_url . '/public_uploads/' . $get->image_sign_up : '#'; ?>" onerror="this.src='<?php echo $base_url; ?>/img/placeholder_1300_1080.jpg'">
                       </div>
@@ -200,7 +256,8 @@ if (!$get) {
 
                     <div class="col-lg-4 col-md-4 col-12 mb-3">
                       <h6>Background Forgot password</h6>
-                      <div class="wrapper-image-preview-form">
+                      <i>Size 1300x1080<br>format: jpg or webp</i>
+                      <div class="wrapper-image-preview-form mt-2">
                         <input name="image_fpassword" type="file" class="form-control" accept="image/*" onchange="loadPreviewImage(event, 'backgroundForgotPassword')">
                         <img class="img-fluid" id="backgroundForgotPassword" src="<?php echo !empty($get->image_fpassword) ? $base_url . '/public_uploads/' . $get->image_fpassword : '#'; ?>" onerror="this.src='<?php echo $base_url; ?>/img/placeholder_1300_1080.jpg'">
                       </div>

@@ -24,24 +24,39 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
       </div>
 
       <div>
-	      <form action="/admin/categories/action" method="post" novalidate enctype="multipart/form-data">
+	      <form action="/admin/categories/action" method="post" novalidate enctype="multipart/form-data" id="form">
 				 <fieldset class="border rounded-2 p-3 mb-4">
 				    <legend><h5>Fill in the fields below:</h5></legend>
 
 					  <div class="row">
-					    <div class="col-md-5">
-				        <div class="form-floating mb-3">
-				          <input name="name" type="text" class="form-control" id="floatingInputName" placeholder="Name" value="<?php if(isset($edit) && $edit){echo ($get->name ?? '');} ?>" required>
-				          <label for="floatingInputName">Name</label>
-				        </div>	   			    	
-					    </div>
+						  <div class="col-md-3">
+								<div class="mb-3">
+										
+										<div class="wrapper-image-preview-form p-5">
+											<input name="image" type="file" class="form-control" id="image" accept="image/*" onchange="loadPreviewImage(event, 'imagePreview')">
+											<img class="img-fluid" id="imagePreview" src="<?php echo !empty($get->image) ? $base_url . '/public_uploads/' . $get->image : 'https://placehold.co/150x150'; ?>" onerror="this.src='https://placehold.co/150x150'">
+										</div>
+										<div class="mb-1">Size: 150x150 (Format: svg or png)</div>
+								</div>
+						  </div>
 
-					    <div class="col-md-5">
-				        <div class="form-floating mb-3">
-				          <input name="slug" type="text" class="form-control" id="floatingInputSlug" placeholder="Slug" value="<?php if(isset($edit) && $edit){echo ($get->slug ?? '');} ?>" required>
-				          <label for="floatingInputSlug">Slug</label>
-				        </div>	   			    	
-					    </div>
+						  <div class="col-md-9">
+
+						    <div class="col-md-12">
+					        <div class="form-floating mb-3">
+					          <input name="name" type="text" class="form-control" <?php echo (isset($edit) && $edit) ? '' : 'id="floatingInputName"'; ?> placeholder="Name" value="<?php echo isset($get->name) ? $get->name : ''; ?>" required>
+					          <label for="floatingInputName">Name</label>
+					        </div>	   			    	
+						    </div>
+
+						    <div class="col-md-12">
+					        <div class="form-floating mb-3">
+					          <input name="slug" type="text" class="form-control" id="floatingInputSlug" placeholder="Slug" value="<?php if(isset($edit) && $edit){echo ($get->slug ?? '');} ?>" required>
+					          <label for="floatingInputSlug">Slug</label>
+					        </div>	   			    	
+						    </div>
+
+						  </div>
 
 							<div class="col-md-2 align-middle d-flex">
 							    <div class="form-check form-switch mb-3 custom-switch">
@@ -61,25 +76,7 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 				 </fieldset>
 							         
 
-	        <div class="d-grid">
-	          <button class="btn btn-success text-uppercase fw-bold mb-2 submit-button" type="submit">Save</button>
-	        </div>
-
-	       <input type="hidden" name="id" value="<?php echo @$edit ? $get->id : ''; ?>">
-	       <input type="hidden" name="action" value="<?php echo @$edit ? 'edit' : 'add'; ?>">
-	      </form>
-      </div>
-
- 
-			<div id="formErrorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-			  <div class="d-flex">
-			    <div class="toast-body">
-			      <i class="bi bi-exclamation-octagon"></i>Attention: Please check all mandatory fields.
-			    </div>
-			    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-			  </div>
-			</div>			
-
 <?php
-require_once("../../inc/footer.php");
+require_once(__DIR__."/../../inc/default-form-footer.php");
+require_once(__DIR__."/../../inc/footer.php");
 ?>

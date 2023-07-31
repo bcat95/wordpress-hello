@@ -23,7 +23,7 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
       </div>
 
       <div>
-	      <form action="/admin/prompts_tone/action" method="post" novalidate enctype="multipart/form-data">
+	      <form action="/admin/prompts_tone/action" method="post" novalidate enctype="multipart/form-data" id="form">
 				 <fieldset class="border rounded-2 p-3 mb-4">
 				    <legend><h5>Fill in the fields below:</h5></legend>
 
@@ -58,27 +58,8 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 					   </div>	    
 
 				 </fieldset>
-							         
-
-	        <div class="d-grid">
-	          <button class="btn btn-success text-uppercase fw-bold mb-2 submit-button" type="submit">Save</button>
-	        </div>
-
-	       <input type="hidden" name="id" value="<?php echo @$edit ? $get->id : ''; ?>">
-	       <input type="hidden" name="action" value="<?php echo @$edit ? 'edit' : 'add'; ?>">
-	      </form>
-      </div>
-
- 
-			<div id="formErrorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-			  <div class="d-flex">
-			    <div class="toast-body">
-			      <i class="bi bi-exclamation-octagon"></i>Attention: Please check all mandatory fields.
-			    </div>
-			    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-			  </div>
-			</div>			
 
 <?php
-require_once("../../inc/footer.php");
+require_once(__DIR__."/../../inc/default-form-footer.php");
+require_once(__DIR__."/../../inc/footer.php");
 ?>

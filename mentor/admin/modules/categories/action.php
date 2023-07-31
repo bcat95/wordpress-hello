@@ -2,10 +2,6 @@
 $module_name = "categories";
 require_once(__DIR__."/../../inc/restrict.php");
 require_once(__DIR__."/../../inc/includes.php");
-if($config->demo_mode){
-    redirect("/admin/{$module_name}", "This option is not available in demo mode.", "error");
-    exit();
-}  
 
 function handleAction($module_name, $action, $id = null) {
     global $$module_name;
@@ -13,20 +9,11 @@ function handleAction($module_name, $action, $id = null) {
     $result = false;
     $message = '';
 
-    if($config->demo_mode){
-        redirect("/admin/{$module_name}", "This option is not available in demo mode.", "error");
-        exit();
-    }      
-
-    $checkSlug = $module_object->getBySlug($_POST['slug']);
-    if(is_object($checkSlug) && isset($checkSlug->slug)){
-        if ($checkSlug->id !== $_POST['id']) {
-            $_POST['slug'] = $checkSlug->slug . "-";
-        }
-    }
-
     switch ($action) {
         case 'add':
+            $max_item_order = $module_object->getMaxOrder()->max_order;
+            $_POST['item_order'] = $max_item_order+1;
+                    
             $result = $module_object->add();
             $message = $result ? 'Record added successfully.' : 'An error occurred while adding a new record. Please try again.';
             break;
@@ -42,7 +29,7 @@ function handleAction($module_name, $action, $id = null) {
 
     if ($message) {
         $messageType = $result ? 'success' : 'error';
-        redirect("/admin/{$module_name}", $message, $messageType);
+        redirect("/admin/{$module_name}", $message, $messageType, (isset($_POST['refer']) && $_POST['refer'] === 'ajax') ? true : false);
     }
 }
 

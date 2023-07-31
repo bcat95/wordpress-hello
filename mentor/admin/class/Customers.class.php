@@ -77,6 +77,12 @@ class Customers extends Action{
         ");
     }
 
+    public function checkCustomerPackages($id_credit_pack, int $id_customer) {
+        return $this->query("SELECT * FROM `customer_credits_packs` WHERE `id_customer` = $id_customer AND status='succeeded' AND id_credit_pack='$id_credit_pack'")->Fetch();
+    }
+
+
+
     public function getByEmail(?string $email) {
         return $this->query("SELECT * FROM $this->table WHERE email='$email' LIMIT 1")->Fetch();
     }  

@@ -146,7 +146,7 @@ $checkout_status_label = isset($payment_status[$checkout_status]) ? $payment_sta
 
               <?php if($getPaymentDetails->payment_method == "bank_deposit" && $getPaymentDetails->status != "succeeded"): ?>
                 <div class="col-12 mt-2">
-                  <div class="alert alert-warning" role="alert">
+                  <div class="deposit-info-area">
                    <?php echo nl2br($config->bank_deposit_info); ?>
                   </div>           
                 </div>     

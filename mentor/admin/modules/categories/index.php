@@ -15,6 +15,7 @@ require_once(__DIR__."/../../helpers/message-session.php");
           <thead>
             <tr>
               <th scope="col" style="width: 1%;"></th>
+              <th scope="col">#</th>
               <th scope="col">Name</th>
               <th scope="col">Slug</th>
               <th scope="col">Status</th>
@@ -26,6 +27,7 @@ require_once(__DIR__."/../../helpers/message-session.php");
              <tr data-id="<?php echo $show->id; ?>">
               <td class="handle" style="cursor: move;">&#9776;</td>
 
+              <td><img width="45" src="<?php echo $base_url."/public_uploads/".$show->image; ?>"  onerror="this.src='https://placehold.co/150x150'"></td>
               <td><?php echo $show->name; ?></td>
               <td><?php echo $show->slug; ?></td>
               <td>

@@ -28,7 +28,8 @@ if($_GET['action'] == "prompt"){
             'display_avatar' => isset($showPrompts->display_avatar) ? (int) $showPrompts->display_avatar : 0,
             'display_copy_btn' => isset($showPrompts->display_copy_btn) ? (int) $showPrompts->display_copy_btn : 0,
             'display_description' => isset($showPrompts->display_description) ? (int) $showPrompts->display_description : 0,
-            'filter_badwords' => isset($showPrompts->filter_badwords) ? (int) $showPrompts->filter_badwords : 0
+            'filter_badwords' => isset($showPrompts->filter_badwords) ? (int) $showPrompts->filter_badwords : 0,
+            'use_dalle' => isset($showPrompts->use_dalle) ? (int) $showPrompts->use_dalle : 0
         ];
         header('Content-Type: application/json');
         echo json_encode($jsonOutput, JSON_PRETTY_PRINT);
@@ -65,4 +66,9 @@ if($_GET['action'] == "language"){
     
     header('Content-Type: application/json');
     echo json_encode($jsonOutput, JSON_PRETTY_PRINT);
+}
+if($_GET['action'] == "badwords"){
+    $getBadWords = $badwords->get(1);
+    $jsonData = json_encode(array("badwords" => $getBadWords->badwords));
+    echo $jsonData;
 }

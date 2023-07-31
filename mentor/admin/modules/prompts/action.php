@@ -13,25 +13,28 @@ function handleCategories($id) {
     }
 }
 
+if (isset($_POST['suggestions'])) {
+    $descriptionArray = $_POST['suggestions'];
+    $descriptionArray = array_filter($descriptionArray, function($value) {
+        return !is_null($value) && $value !== '';
+    });
+    
+    $descriptionString = json_encode($descriptionArray, JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+    $_POST['suggestions'] = addslashes($descriptionString);
+}
+
+
 function handleAction($module_name, $action, $id = null) {
-    global $config;
     global $$module_name;
     $module_object = $$module_name;
     $result = false;
     $message = '';
 
-    if($config->demo_mode){
-        redirect("/admin/{$module_name}", "This option is not available in demo mode.", "error");
-        exit();
-    }
-
     switch ($action) {
         case 'add':
-            $_POST['item_order'] = 0;
-            $getMaxOrder = $module_object->getMaxOrder();
-            if(isset($getMaxOrder->max_order) && $getMaxOrder->max_order > 0){
-                $_POST['item_order'] = (int) $getMaxOrder->max_order + 1;
-            }
+
+            $max_item_order = $module_object->getMaxOrder()->max_order;
+            $_POST['item_order'] = $max_item_order+1;
 
             $result = $module_object->add();
             if($result){
@@ -46,6 +49,8 @@ function handleAction($module_name, $action, $id = null) {
             $message = $result ? 'Record updated successfully.' : 'An error occurred while updating the record. Please try again.';
             break;
         case 'delete':
+            $prompts_categories = new PromptsCategories();
+            $prompts_categories->deletePromptCategory($id);
             $result = $module_object->delete($id);
             $message = $result ? 'Record deleted successfully.' : 'An error occurred while deleting the record. Please try again.';
             break;
@@ -53,7 +58,7 @@ function handleAction($module_name, $action, $id = null) {
 
     if ($message) {
         $messageType = $result ? 'success' : 'error';
-        redirect("/admin/{$module_name}", $message, $messageType);
+        redirect("/admin/{$module_name}", $message, $messageType, (isset($_POST['refer']) && $_POST['refer'] === 'ajax') ? true : false);
     }
 }
 

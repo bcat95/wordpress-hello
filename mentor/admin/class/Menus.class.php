@@ -15,6 +15,10 @@ class Menus extends Action{
 
     public function getBySlug(?string $slug) {
         return $this->query("SELECT * FROM $this->table WHERE slug='$slug'")->Fetch();
-    }  
+    }
+
+    public function getMaxOrder() {
+        return $this->query("SELECT MAX(item_order) AS max_order FROM $this->table")->Fetch();
+    }    
 
 }

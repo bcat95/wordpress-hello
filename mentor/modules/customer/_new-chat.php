@@ -16,7 +16,8 @@ if($AI->id){
         unset($_GET['chat']);
     }
 
-    header("location:".$base_url."/chat/".$AI->slug);
+    $redirect_url = $base_url . "/chat/" . $AI->slug . (isset($_GET['embed']) ? "?embed_chat=true" : "");
+    header("Location: " . $redirect_url);
     die();    
 }else{
     header("location:".$base_url."/");

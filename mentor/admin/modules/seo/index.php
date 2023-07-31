@@ -199,6 +199,52 @@ if (!$get) {
 
       </fieldset>
 
+      <fieldset class="border rounded-2 p-3 mb-4">
+        <legend><h5>Maintenance page</h5></legend>
+
+        <div class="row">
+
+          <div class="col-lg-12">
+            <label class="mb-2 col-12">
+              <span>Meta title</span>
+              <input name="maintenance_meta_title" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($seo_array['maintenance_meta_title'] ?? '');} ?>">
+            </label>
+          </div>
+
+          <div class="col-lg-12">
+            <label class="mb-2 col-12">
+              <span>Meta description</span>
+              <input name="maintenance_meta_description" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($seo_array['maintenance_meta_description'] ?? '');} ?>">
+            </label>
+          </div>
+
+        </div>
+
+      </fieldset>
+
+      <fieldset class="border rounded-2 p-3 mb-4">
+        <legend><h5>Blog</h5></legend>
+
+        <div class="row">
+
+          <div class="col-lg-12">
+            <label class="mb-2 col-12">
+              <span>Meta title</span>
+              <input name="blog_meta_title" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($seo_array['blog_meta_title'] ?? '');} ?>">
+            </label>
+          </div>
+
+          <div class="col-lg-12">
+            <label class="mb-2 col-12">
+              <span>Meta description</span>
+              <input name="blog_meta_description" type="text" class="form-control" value="<?php if(isset($edit) && $edit){echo ($seo_array['blog_meta_description'] ?? '');} ?>">
+            </label>
+          </div>
+
+        </div>
+
+      </fieldset>
+
 
           <div class="d-grid">
             <button class="btn btn-success text-uppercase fw-bold mb-2 submit-button" type="submit">Save</button>

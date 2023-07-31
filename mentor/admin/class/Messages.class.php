@@ -10,8 +10,30 @@ class Messages extends Action{
     }
 
     public function getPromptByIdUser(?int $id_customer) {
-        return $this->query("SELECT m.id_prompt, p.name, p.status, p.expert, p.slug, p.image, MAX(m.created_at) as first_created_at, COUNT(DISTINCT m.id_thread) as num_unique_threads, COUNT(m.content) as num_messages FROM (SELECT id_prompt, id_thread, created_at, content FROM messages WHERE id_customer = " . $id_customer . ") AS m JOIN prompts AS p ON m.id_prompt = p.id WHERE p.status = 1 GROUP BY m.id_prompt, p.name, p.expert, p.slug ORDER BY first_created_at DESC");
+        return $this->query("
+            SELECT 
+                m.id_prompt, 
+                p.name, 
+                p.status, 
+                p.expert, 
+                p.slug, 
+                p.image, 
+                MIN(m.created_at) as first_created_at,
+                MAX(m.created_at) as last_created_at, 
+                COUNT(DISTINCT m.id_thread) as num_unique_threads, 
+                COUNT(m.content) as num_messages 
+            FROM 
+                (SELECT id, id_message, id_thread, id_customer, id_prompt, role, content, created_at, item_order, total_characters, saved, dall_e_array
+                FROM messages 
+                WHERE id_customer = " . $id_customer . "
+                ) AS m 
+            JOIN prompts AS p ON m.id_prompt = p.id 
+            WHERE p.status = 1 
+            GROUP BY m.id_prompt, p.name, p.status, p.expert, p.slug, p.image 
+            ORDER BY last_created_at DESC
+        ");
     }
+
 
     public function getThreadByIdUserAndPrompt(?int $id_customer,?int $id_prompt) {
         return $this->query("

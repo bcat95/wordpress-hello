@@ -3,7 +3,7 @@ body.dark-mode, .dark-mode .bg-white {
     background: #181818 !important;
 }
 .dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5, .dark-mode h6 {
-    color: #FFF;
+    color: #FFF !important;
 }
 .dark-mode header {
     background: #111111;
@@ -16,8 +16,6 @@ body.dark-mode, .dark-mode .bg-white {
     color: #E6E6E6;
 }
 .dark-mode .card-ai {
-    border-radius: 0px;
-    overflow: hidden;
     background: #2d2d2d;
     margin-bottom: 2em;
     border:0;
@@ -100,7 +98,6 @@ body.dark-mode, .dark-mode .bg-white {
     color: #8d8d8d;
 }
 .dark-mode .thread-ai .message-container {
-    margin-right: 7em;
     border-bottom: 0;
     border: 1px solid #4f4f4f;
 }
@@ -138,7 +135,6 @@ body.dark-mode, .dark-mode .bg-white {
   border-radius: 5px; 
 }
 .dark-mode .copy-text, .dark-mode .copy-text:hover {
-    border: 1px solid #FFF;
     color: #FFF;
 }
 .dark-mode .message-area-bottom {
@@ -215,9 +211,6 @@ body.dark-mode, .dark-mode .bg-white {
 .dark-mode .modal-footer {
     border-top: 1px solid #757575;
 }
-.dark-mode .btn-close {
-    display: none;
-}
 .dark-mode .table>:not(caption)>*>* {
     border-color: #535353;
 }
@@ -234,7 +227,7 @@ body.dark-mode, .dark-mode .bg-white {
     color: #FFF;
 }
 .dark-mode .ai-chat-top {
-    background: #252525;
+    background: #0c0c0c;
     box-shadow: none;
 }
 .dark-mode .col-options-input {
@@ -242,4 +235,99 @@ body.dark-mode, .dark-mode .bg-white {
 }
 .dark-mode .message-area-bottom {
     background: #252525;    
+}
+.dark-mode .alert-warning{
+    background: #232323;
+    border: 1px solid #3f3f3f;
+}
+.dark-mode .si-nav-tabs .nav-link{
+    background: #2d2d2d;
+    color: #ededed;
+    border-radius: 4px;
+}
+.dark-mode .si-nav-tabs .nav-link:hover{
+    background: #000000;
+    color: #ffffff;
+}
+.dark-mode .section-maintenance {
+    background: radial-gradient(circle at 48.7% 44.3%, rgb(37 37 37) 0%, rgb(39 39 39) 22.9%, rgb(35 35 35) 76.7%, rgb(0 0 0) 100.2%);
+}
+.dark-mode .wrapper-image-ia{
+    border: 1px solid #595959;
+}
+.dark-mode .wrapper-category-item img {
+  filter: invert(100%);
+  opacity: 1;
+}
+.dark-mode .wrapper-category-item{
+    background: #2d2d2d;
+    border:1px solid #3b3b3b;
+    border-bottom: 7px solid #212121;
+}
+.dark-mode .wrapper-category-item:hover {
+    opacity: 1;
+    box-shadow: 2px 2px 13px 2px #37363687;
+}
+.dark-mode .wrapper-category-item span{
+    color: #c3c3c3;
+}
+.dark-mode .blog-sidebar{
+    background: #2d2d2d;
+}
+.dark-mode .wrapper-card-post{
+    background: #232323;
+    box-shadow: none;
+}
+.dark-mode .card-post-title h2 a{
+    color: #FFF;
+}
+.dark-mode .sticky-header {
+    background: #181818e6;
+    border-bottom: 1px solid #3d3d3d;
+}
+.dark-mode .copy-text{
+    background: transparent;
+}
+.dark-mode .chat-action-buttons{
+    background: #3c3e3f;
+}
+.dark-mode .chat-action-buttons:hover{
+    background: #272727;
+}
+.dark-mode .chat-action-buttons i{
+    color: #FFF;
+}
+.dark-mode .dropdown-toggle::after{
+    color: #FFF;
+}
+.dark-mode .modal-header .btn-close{
+    filter: invert(100%);
+    opacity: 1;
+}
+.dark-mode li::marker{
+    color: #FFF;
+}
+.dark-mode .post-cover span{
+    color: #FFF;
+}
+.dark-mode .share-post{
+    border-bottom: 1px solid #434343;
+}
+.dark-mode .share-post i, .dark-mode .share-post i:hover{
+    color: #FFF;
+}
+.dark-mode .deposit-info-area{
+    border: 1px solid #535353;
+}
+.dark-mode .wrapper-vip-message{
+    background: #252525;
+    box-shadow: none;
+}
+.dark-mode .wrapper-vip-credit-pack{
+    background: #393939;
+    border: 1px solid #6b6b6b;
+    border-bottom: 5px solid #535353;
+}
+.dark-mode .wrapper-vip-credit-pack:hover {
+    box-shadow: 2px 3px 17px -2px #494949;
 }

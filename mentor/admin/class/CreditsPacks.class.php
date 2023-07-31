@@ -13,4 +13,11 @@ class CreditsPacks extends Action{
         return $this->query("SELECT * FROM $this->table WHERE status='1' ORDER BY item_order ASC");
     }  
 
+    public function getMaxOrder() {
+        return $this->query("SELECT MAX(item_order) AS max_order FROM $this->table")->Fetch();
+    }
+
+    public function getMaxTier() {
+        return $this->query("SELECT MAX(tier) AS max_tier FROM $this->table")->Fetch();
+    }    
 }

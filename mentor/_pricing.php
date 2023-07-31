@@ -6,8 +6,75 @@ require_once("inc/includes.php");
 define('META_TITLE', $seoConfig['pricing_meta_title']);
 define('META_DESCRIPTION', $seoConfig['pricing_meta_description']);
 require_once("inc/header.php");
-$getCreditsPacks = $credits_packs->getListFront();
+$getCreditsPacks = $credits_packs->getListFront()->FetchAll();
 $getMenuName = $menus->get(3);
+
+if($config->display_prompts_packagelist){
+  $highTier = $config->vip_higher_tier;
+  $organized_vip_prompts = array();
+  $free_prompts = array_map(function($prompt) {
+      return array(
+          'id' => $prompt->id,
+          'name' => $prompt->name,
+          'image' => $prompt->image
+      );
+  }, $prompts_credits_packs->getAllFreePrompts()->FetchAll());
+
+  foreach ($getCreditsPacks as $showCreditsPackArray) {
+      $vip_prompts = array_map(function($showP) {
+          return array(
+              'id' => $showP->id,
+              'name' => $showP->name,
+              'image' => $showP->image,
+              'tier' => $showP->tier
+          );
+      }, $prompts_credits_packs->getAllFreePromptsByCreditPackId($showCreditsPackArray->id)->FetchAll());
+    
+      foreach ($vip_prompts as $vip_prompt) {
+          $organized_vip_prompts[$vip_prompt['tier']][] = $vip_prompt;
+      }
+  }
+
+  if ($highTier) {
+      $all_tiers = array_keys($organized_vip_prompts);
+      sort($all_tiers);
+
+      $accumulated_prompts = array();
+      foreach ($all_tiers as $i) {
+          if (!empty($organized_vip_prompts[$i])) {
+              // Merge and remove duplicates
+              $merged = array_merge($accumulated_prompts, $organized_vip_prompts[$i]);
+              $unique = array();
+              foreach ($merged as $item) {
+                  $unique[md5($item['name'].$item['image'])] = $item;
+              }
+              $organized_vip_prompts[$i] = array_values($unique);
+          }
+          $accumulated_prompts = $organized_vip_prompts[$i] ?? array();
+      }
+  }
+
+  foreach ($organized_vip_prompts as $tier => &$prompts) {
+      if ($config->vip_display_free_prompts) {
+          $free_prompts_tiered = array_map(function($prompt) use ($tier) {
+              $prompt['tier'] = $tier;
+              return $prompt;
+          }, $free_prompts);
+
+          // Merge and remove duplicates
+          $merged = array_merge($free_prompts_tiered, $prompts);
+          $unique = array();
+          foreach ($merged as $item) {
+              $unique[md5($item['name'].$item['image'])] = $item;
+          }
+          $prompts = array_values($unique);
+      } else {
+          $prompts = $prompts;
+      }
+  }
+  unset($prompts);
+}
+
 ?>
 
 <section id="inner-page">
@@ -39,11 +106,13 @@ $getMenuName = $menus->get(3);
 
 
     <div class="row">
-      <?php foreach ($getCreditsPacks as $showCreditsPack) { ?>
+      <?php 
+      foreach ($getCreditsPacks as $showCreditsPack){
+      ?>
         <div class="col-lg-4 mb-5 ">
           <div class="card mb-5 mb-lg-0 h-100">
             <div class="card-body d-flex flex-column">
-              <div class="card-price-thumb"><img src="<?php echo $base_url."/public_uploads/".$showCreditsPack->image; ?>"  onerror="this.src='<?php echo $base_url; ?>/img/coin-placeholder.png'"></div>
+              <div class="card-price-thumb"><img alt="<?php echo $showCreditsPack->name;?>" title="<?php echo $showCreditsPack->name;?>" src="<?php echo $base_url."/public_uploads/".$showCreditsPack->image; ?>"  onerror="this.src='<?php echo $base_url; ?>/img/coin-placeholder.png'"></div>
               <h5 class="card-title text-muted text-uppercase text-center"><?php echo $showCreditsPack->name; ?></h5>
               <h6 class="card-price text-center"><?php echo $showCreditsPack->price; ?></h6>
               <hr>
@@ -55,6 +124,22 @@ $getMenuName = $menus->get(3);
                   }
                 ?>
               </ul>
+            
+            <?php if($config->display_prompts_packagelist){?>
+            <div class="package-display-prompts-vip">
+              <div class="package-wrapper-prompt">
+                <?php
+                if (isset($organized_vip_prompts[$showCreditsPack->tier])) {
+                  foreach ($organized_vip_prompts[$showCreditsPack->tier] as $prompt) {?>
+                      <div class="package-wrapper-prompt-thumb">
+                        <img src="<?php echo $base_url."/public_uploads/".$prompt['image']; ?>" alt="<?php echo $prompt['name']; ?>" title="<?php echo $prompt['name']; ?>" onerror="this.src='<?php echo $base_url; ?>/img/no-image.svg'">
+                      </div>
+                  <?php } ?>
+                <?php } ?>
+              </div>
+            </div>
+            <?php } ?>
+                      
               <div class="d-grid mt-auto">
                 <button data-id="<?php echo $showCreditsPack->id; ?>" data-href="<?php echo $base_url.'/recharge-credits'; ?>" class="btn btn-primary text-uppercase purchase-btn" <?php if ($single_payment_method) echo 'data-single-payment-method="true"'; ?>><?php echo $lang['price_page_btn_purchase']; ?></button>
                 <div class="payment-options d-none">

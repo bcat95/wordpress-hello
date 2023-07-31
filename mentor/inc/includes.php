@@ -1,11 +1,4 @@
 <?php 
-function redirect($url, $message = '', $status = 'success') {
-  $_SESSION['action'] = $status;
-  $_SESSION['action_message'] = $message;
-  header("location: $url");
-  exit();
-}
-
 // Start session if not already started
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -17,22 +10,27 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 require_once(__DIR__ . '/../inc/functions.php');
 
 // Instantiate required classes
-$prompts = new Prompts();
-$pages = new Pages();
+$badwords = new Badwords();
+$categories = new Categories();
+$credits_packs = new CreditsPacks();
+$customer_credits_packs = new CustomerCreditsPacks();
+$prompts_credits_packs = new PromptsCreditsPacks();
 $customers = new Customers();
-$menus = new Menus();
 $languages = new Languages();
-$settings = new Settings();
+$menus = new Menus();
 $messages = new Messages();
+$pages = new Pages();
+$posts = new Posts();
+$posts_tags = new PostsTags();
+$prompts = new Prompts();
+$prompts_categories = new PromptsCategories();
 $prompts_output = new PromptsOutput();
 $prompts_tone = new PromptsTone();
 $prompts_writing = new PromptsWriting();
-$credits_packs = new CreditsPacks();
-$customer_credits_packs = new CustomerCreditsPacks();
-$categories = new Categories();
-$theme = new Theme();
 $seo = new Seo();
-$prompts_categories = new PromptsCategories();
+$settings = new Settings();
+$tags = new Tags();
+$theme = new Theme();
 
 // Get configuration settings
 $config = $settings->get(1);
@@ -41,7 +39,6 @@ if (isset($config) && is_object($config)) {
     ini_set('display_startup_errors', $config->php_errors);
     error_reporting($config->php_errors ? E_ALL : 0);
 }
-
 
 // Get SEO configs
 $getSeo = $seo->get(1);
@@ -114,6 +111,7 @@ if (!isset($_SESSION['id_customer']) && empty($_SESSION['id_customer'])) {
 } else {
     $isLogged = true;
     $userCredits = $customers->get($_SESSION['id_customer']);
+    $user_credit_pack = getCustomerCreditPack($_SESSION['id_customer']);
     if($userCredits){
         $userCredits = $userCredits->credits;
     }else{
@@ -140,4 +138,26 @@ if (isset($use_stripe) && $use_stripe) {
 // Get customer details if logged in
 if ($isLogged) {
     $getCustomer = $customers->getCustomer($_SESSION['id_customer']);
+}
+
+// Check maintenance mode
+if($config->maintenance_mode){
+    // Check if admin session exists
+    if (!isset($_SESSION['admin_id'])) {
+        if(!$maintenance_mode){
+            header("Location:".$base_url."/maintenance");
+            exit(); // Ensure that the script exits after the redirect
+        }
+    } else {
+    }
+}
+
+function showVipCard($idPrompt){
+    global $prompts, $lang, $isLogged, $credits_packs, $user_credit_pack;
+
+    $vipCheckResult = $isLogged ? checkLoggedInVipStatus($idPrompt, $prompts, $credits_packs, $user_credit_pack) : checkLoggedOutVipStatus($idPrompt, $prompts);
+
+    if($vipCheckResult){
+        echo '<div class="card-vip"><img src="/img/icon-vip.svg" alt="'.$lang['vip_label'].'" title="'.$lang['vip_label'].'"><span>'.$lang['vip_label'].'</span></div>';
+    }
 }

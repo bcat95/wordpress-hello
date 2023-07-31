@@ -9,8 +9,10 @@ $prompts = new Prompts();
 $categories = new Categories();
 $customers = new Customers();
 $messages = new Messages();
+$tags = new Tags();
 $languages = new Languages();
 $menus = new Menus();
+$posts = new Posts();
 $users = new Users();
 $analytics = new Analytics();
 $settings = new Settings();
@@ -18,15 +20,31 @@ $prompts_output = new PromptsOutput();
 $prompts_tone = new PromptsTone();
 $prompts_writing = new PromptsWriting();
 $prompts_categories = new PromptsCategories();
+$prompts_vip = new PromptsCategories();
+$prompts_credits_packs = new PromptsCreditsPacks();
+$posts_tags = new PostsTags();
 $credits_packs = new CreditsPacks();
 $pages = new Pages();
 $theme = new Theme();
 $seo = new Seo();
 $update = new Update();
+$badwords = new Badwords();
 $customer_credits_packs = new CustomerCreditsPacks();
+
+// Get configuration settings
 $config = $settings->get(1);
+if (isset($config) && is_object($config)) {
+    ini_set('display_errors', $config->php_errors);
+    ini_set('display_startup_errors', $config->php_errors);
+    error_reporting($config->php_errors ? E_ALL : 0);
+}
+
 if(isset($_SESSION['admin_id'])){   
     $getUser = $users->get($_SESSION['admin_id']);
+    if(!$getUser->status){
+        unset($_SESSION['admin_id']);
+        redirect('/admin/login?error=user_disabled', 'User has been deactivated', 'error');
+    }
 }
 
 $saltnumber = 2545215614;
@@ -43,14 +61,22 @@ function url(){
 $base_url = url();
 $base_url = $base_url;
 
-function redirect($url, $message = '', $status = 'success') {
-  $_SESSION['action'] = $status;
-  $_SESSION['action_message'] = $message;
-  header("location: $url");
-  die();
-  exit();
+function redirect($url, $message = '', $status = 'success', $isAjax = false) {
+  if ($isAjax) {
+    $response = array(
+      'status' => $status,
+      'message' => $message
+    );
+    echo json_encode($response);
+    exit();
+  } else {
+    $_SESSION['action'] = $status;
+    $_SESSION['action_message'] = $message;
+    header("location: $url");
+    die();
+    exit();
+  }
 }
-
 
 // Escape single quotes and other special characters before saving to the database
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -115,4 +141,35 @@ function findPaymentIntent($config, $id_order) {
     }
     
     return $paymentIntentFound;
+}
+
+
+//Check demo mode
+if($config->demo_mode && ((isset($_POST['action']) && in_array($_POST['action'], ['add', 'edit', 'delete'])) || in_array(@$_GET['action'], ['delete']))) {
+    redirect("/admin/{$module_name}", "This option is not available in demo mode.", "error", (isset($_POST['refer']) && $_POST['refer'] === 'ajax') ? true : false);
+    exit();
+}
+
+
+// Function to check for duplicate tiers
+function checkDuplicateTiers($data) {
+    $tierCounts = array();
+
+    // Count the occurrences of each tier
+    foreach ($data as $show) {
+        $tier = $show->tier;
+        if (!isset($tierCounts[$tier])) {
+            $tierCounts[$tier] = 1;
+        } else {
+            $tierCounts[$tier]++;
+        }
+    }
+
+    // Check if there are any duplicate tiers
+    foreach ($tierCounts as $tier => $count) {
+        if ($count > 1) {
+            // Display a message for duplicate tiers
+            echo "<div class='alert alert-danger'><i class='bi bi-exclamation-circle'></i> <b>Tier $tier has $count occurrences</b>. It is recommended to avoid using duplicate tiers to prevent complications if you use the VIP packages.</div>";
+        }
+    }
 }

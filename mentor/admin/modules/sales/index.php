@@ -56,7 +56,7 @@ require_once(__DIR__."/../../helpers/message-session.php");
                 <th>Customer</th>
                 <th>Price</th>
                 <th>Credits</th>
-                <th>Purchase date</th>
+                <th scope="col" data-order-by="order-col">Purchase date</th>
                 <th>Payment Method</th>
                 <th>Status</th>
                 <th class="text-end">Action</th>

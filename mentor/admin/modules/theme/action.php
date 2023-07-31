@@ -46,6 +46,7 @@ $heroImage = processUpload('image_hero');
 $image_sign_in = processUpload('image_sign_in');
 $image_sign_up = processUpload('image_sign_up');
 $image_fpassword = processUpload('image_fpassword');
+$image_fav = processUpload('image_fav');
 
 // Adicionar os valores dos campos de upload diretamente no array $_POST
 $_POST['image_logo'] = $logoImage;
@@ -54,6 +55,7 @@ $_POST['image_hero'] = $heroImage;
 $_POST['image_sign_in'] = $image_sign_in;
 $_POST['image_sign_up'] = $image_sign_up;
 $_POST['image_fpassword'] = $image_fpassword;
+$_POST['image_fav'] = $image_fav;
 
 // Converter o array "theme_options" em uma string JSON
 $theme_options_json = json_encode($theme_options, JSON_HEX_APOS);

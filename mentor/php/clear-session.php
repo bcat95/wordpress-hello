@@ -1,6 +1,8 @@
 <?php
 if ($_POST) {
-    session_start();
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
     if ($_POST['action'] == "all") {
         $_SESSION["history"] = [];
         unset($_SESSION['threads']);

@@ -30,17 +30,19 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 					  <div class="row">
 					    <div class="col-md-2">
 				        <div class="form-floating mb-3">
-				          <input name="name" type="text" class="form-control" id="floatingInputName" placeholder="Name" value="<?php if(isset($edit) && $edit){echo ($get->name ?? '');} ?>" required>
+				          <input name="name" type="text" class="form-control" <?php echo (isset($edit) && $edit) ? '' : 'id="floatingInputName"'; ?> placeholder="Name" value="<?php echo isset($get->name) ? $get->name : ''; ?>" required>
 				          <label for="floatingInputName">Name</label>
 				        </div>	   			    	
 					    </div>
 
+					    
 					    <div class="col-md-3">
 				        <div class="form-floating mb-3">
 				          <input name="slug" type="text" class="form-control" id="floatingInputSlug" placeholder="Url" value="<?php if(isset($edit) && $edit){echo ($get->slug ?? '');} ?>" required>
 				          <label for="floatingInputSlug">Url</label>
 				        </div>	   			    	
 					    </div>
+					  	
 
 					  
 							<div class="col-md-3">
@@ -86,7 +88,7 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 
 
 				 </fieldset>
-							         
+
 
 	        <div class="d-grid">
 	          <button class="btn btn-success text-uppercase fw-bold mb-2 submit-button" type="submit">Save</button>

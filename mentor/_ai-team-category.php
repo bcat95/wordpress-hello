@@ -16,7 +16,9 @@ if(isset($_REQUEST['slug']) && $_REQUEST['slug']){
     $ids_prompts[] = $show->id_prompt;
   }  
   $ids = implode(',', $ids_prompts);
-  $getPrompts = $prompts->getListByIDS($ids);
+  if($ids){
+    $getPrompts = $prompts->getListByIDS($ids);
+  }
 }else{
   redirect($base_url.'/404', "", 'error');
 }
@@ -56,10 +58,10 @@ require_once("inc/header.php");
       <?php if(isset($getPrompts) && $getPrompts){?>
       <div class="row mt-5">
         <?php foreach ($getPrompts as $showPrompts){?>
-
           <div class="col-lg-3 col-md-4">
-            <div class="card-ai d-grid">
-              <div class="card-ai-image"><a href="<?php echo $base_url; ?>/chat/<?php echo $showPrompts->slug; ?>"><img src="<?php echo $base_url; ?>/public_uploads/<?php echo $showPrompts->image; ?>" onerror="this.src='<?php echo $base_url; ?>/img/no-image.svg'" alt="<?php echo $showPrompts->name; ?>" title="<?php echo $showPrompts->name; ?>"></a></div>
+            <div class="card-ai <?php echo isset($theme_skin['ai_card_style']) ? $theme_skin['ai_card_style'] : ''; ?> d-grid">
+              <?php showVipCard($showPrompts->id); ?> 
+              <div class="card-ai-image"><a href="<?php echo $base_url; ?>/chat/<?php echo $showPrompts->slug; ?>"><img loading="lazy"  src="<?php echo $base_url; ?>/public_uploads/<?php echo $showPrompts->image; ?>" onerror="this.src='<?php echo $base_url; ?>/img/no-image.svg'" alt="<?php echo $showPrompts->name; ?>" title="<?php echo $showPrompts->name; ?>"></a></div>
               <div class="card-ai-bottom">
                 <div class="card-ai-name"><h3><?php echo $showPrompts->name; ?></h3></div>
                 <div class="card-ai-job"><span><?php echo $showPrompts->expert; ?></span></div>

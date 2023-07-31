@@ -2,10 +2,7 @@
 $module_name = "languages";
 require_once(__DIR__."/../../inc/restrict.php");
 require_once(__DIR__."/../../inc/includes.php");
-if($config->demo_mode){
-    redirect("/admin/{$module_name}", "This option is not available in demo mode.", "error");
-    exit();
-}  
+
 
 $translations = array();
 $ignored_fields = array("id", "action", "lang","lang_name","isDefault");
@@ -17,9 +14,8 @@ foreach ($_POST as $key => $value) {
 }
 
 // Converter o array "translations" em uma string JSON
-$translations_json = json_encode($translations, JSON_HEX_APOS);
+$translations_json = json_encode($translations, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT | JSON_HEX_APOS);
 $_POST['translations'] = $translations_json;
-
 
 
 function handleAction($module_name, $action, $id = null) {
@@ -45,7 +41,7 @@ function handleAction($module_name, $action, $id = null) {
 
     if ($message) {
         $messageType = $result ? 'success' : 'error';
-        redirect("/admin/{$module_name}", $message, $messageType);
+        redirect("/admin/{$module_name}", $message, $messageType, (isset($_POST['refer']) && $_POST['refer'] === 'ajax') ? true : false);
     }
 }
 

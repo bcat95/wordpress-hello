@@ -33,6 +33,21 @@
 							        Login failed. Please try again.
 							      </div>
 							      <?php break;
+							    case 'user_agent_changed': ?>
+							      <div class="alert alert-danger">
+							        You have been logged out; please log in again.
+							      </div>
+							      <?php break;	
+							    case 'invalid_token': ?>
+							      <div class="alert alert-warning">
+							        Log in to continue
+							      </div>
+							      <?php break;		
+							    case 'user_disabled': ?>
+							      <div class="alert alert-danger">
+							        User has been deactivated
+							      </div>
+							      <?php break;								      						      
 							    default: ?>
 							      <div class="alert alert-danger">
 							        Unknown error occurred. Please try again.

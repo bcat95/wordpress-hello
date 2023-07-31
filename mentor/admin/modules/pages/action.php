@@ -2,11 +2,7 @@
 $module_name = "pages";
 require_once(__DIR__."/../../inc/restrict.php");
 require_once(__DIR__."/../../inc/includes.php");
-if($config->demo_mode){
-    redirect("/admin/{$module_name}", "This option is not available in demo mode.", "error");
-    exit();
-}   
-    
+
 function handleAction($module_name, $action, $id = null) {
     global $$module_name;
     $module_object = $$module_name;
@@ -15,6 +11,9 @@ function handleAction($module_name, $action, $id = null) {
 
     switch ($action) {
         case 'add':
+            $max_item_order = $module_object->getMaxOrder()->max_order;
+            $_POST['item_order'] = $max_item_order+1;
+                    
             $result = $module_object->add();
             $message = $result ? 'Record added successfully.' : 'An error occurred while adding a new record. Please try again.';
             break;
@@ -35,7 +34,7 @@ function handleAction($module_name, $action, $id = null) {
 
     if ($message) {
         $messageType = $result ? 'success' : 'error';
-        redirect("/admin/{$module_name}", $message, $messageType);
+        redirect("/admin/{$module_name}", $message, $messageType, (isset($_POST['refer']) && $_POST['refer'] === 'ajax') ? true : false);
     }
 }
 

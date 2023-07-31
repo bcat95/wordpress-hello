@@ -20,7 +20,7 @@ require_once(__DIR__."/../../helpers/message-session.php");
               <th scope="col">Threads</th>
               <th scope="col">Credits</th>              
               <th scope="col">Active</th>
-              <th scope="col">Registration date</th>
+              <th scope="col" data-order-by="order-col">Registration date</th>
               <th scope="col">Login as user</th>
               <th scope="col" class="text-end">Action</th>
             </tr>

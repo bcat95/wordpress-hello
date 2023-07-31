@@ -26,7 +26,7 @@ require_once(__DIR__."/../../helpers/message-session.php");
              <tr data-id="<?php echo $show->id; ?>">
               <td class="handle" style="cursor: move;">&#9776;</td>
               <td class="align-middle"><?php echo $show->name; ?></td>
-              <td class="align-middle"><?php echo $show->slug; ?></td>
+              <td><a href="<?php echo $base_url."/pages/".$show->slug; ?>" target="_blank" class="btn btn-primary btn-sm"><i class="bi bi-box-arrow-up-right"></i> View</a></td>
               <td class="align-middle">
                 <div class="form-check form-switch form-switch-lg">
                   <input class="form-check-input" type="checkbox" role="switch" id="statusSwitch-<?php echo $show->id; ?>" <?php echo ($show->status == 1) ? 'checked' : ''; ?>>

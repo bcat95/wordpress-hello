@@ -24,13 +24,13 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
       </div>
 
       <div>
-	      <form action="/admin/pages/action" method="post" novalidate enctype="multipart/form-data">
+	      <form action="/admin/pages/action" method="post" novalidate enctype="multipart/form-data" id="form">
 				 
 				    
 					  <div class="row">
 					    <div class="col-md-5">
 				        <div class="form-floating mb-3">
-				          <input name="name" type="text" class="form-control" id="floatingInputName" placeholder="Name" value="<?php if(isset($edit) && $edit){echo ($get->name ?? '');} ?>" required>
+				          <input name="name" type="text" class="form-control" <?php echo (isset($edit) && $edit) ? '' : 'id="floatingInputName"'; ?> placeholder="Name" value="<?php echo isset($get->name) ? $get->name : ''; ?>" required>
 				          <label for="floatingInputName">Name</label>
 				        </div>	   			    	
 					    </div>
@@ -70,33 +70,14 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "edit") {
 
 							<div class="col-md-12">
 	              <div class="form-group">
-	                <textarea id="editor" name="content"><?php echo isset($get->content) ? $get->content : ''; ?></textarea>
+	                <textarea class="editor" name="content"><?php echo isset($get->content) ? $get->content : ''; ?></textarea>
 	              </div>								
 							</div>
 
 					   </div>	    
 
-
-
-	        <div class="d-grid">
-	          <button class="btn btn-success text-uppercase fw-bold mb-2 submit-button" type="submit">Save</button>
-	        </div>
-
-	       <input type="hidden" name="id" value="<?php echo @$edit ? $get->id : ''; ?>">
-	       <input type="hidden" name="action" value="<?php echo @$edit ? 'edit' : 'add'; ?>">
-	      </form>
-      </div>
-
- 
-			<div id="formErrorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-			  <div class="d-flex">
-			    <div class="toast-body">
-			      <i class="bi bi-exclamation-octagon"></i> Attention: Please check all mandatory fields.
-			    </div>
-			    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-			  </div>
-			</div>			
-
+<br>
 <?php
-require_once("../../inc/footer.php");
+require_once(__DIR__."/../../inc/default-form-footer.php");
+require_once(__DIR__."/../../inc/footer.php");
 ?>

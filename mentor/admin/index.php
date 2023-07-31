@@ -6,7 +6,8 @@ $countPrompts = $analytics->getByTable("prompts")->rowCount();
 $countCustomers = $analytics->getByTable("customers")->rowCount();
 $countSales = $analytics->getByTable("customer_credits_packs")->rowCount();
 $countCategories = $analytics->getByTable("categories")->rowCount();
-$mostChatPrompts = $analytics->getMostChatPrompts(4);
+$mostChatPrompts = $analytics->getMostChatPrompts(8);
+$get = $credits_packs->getList()->FetchAll();
 ?>
 
 <div class="row mt-3">

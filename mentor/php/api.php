@@ -1,8 +1,52 @@
 <?php
-session_start();
+header('X-Accel-Buffering: no');
+ini_set('output_buffering', 'off');
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 require_once("../inc/includes.php");
+include('key.php');
+
 $config = $settings->get(1);
+$allowed_origin = $base_url;
 $total_characters = 0;
+
+function set_headers($allowed_origin) {
+    if (isset($_SERVER['HTTP_ORIGIN']) && $_SERVER['HTTP_ORIGIN'] == $allowed_origin) {
+        header("Access-Control-Allow-Origin: $allowed_origin");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type");
+    } else {
+        echo 'data: {"error": "[ERROR]","message":"request not allowed"}' . PHP_EOL;
+        die();
+    }
+}
+
+function check_credits($isLogged, $userCredits, $config) {
+    global $prompts;
+    $checkEmbed = $prompts->get($_POST['ai_id']);
+
+    if(!$isLogged){
+        if (isset($_SESSION['message_count']) && $_SESSION['message_count'] > $config->free_number_chats) {
+            if(!$checkEmbed->allow_embed_chat){
+                if(!$config->free_mode){
+                    echo 'data: {"error": "[CHAT_LIMIT]"}' . PHP_EOL;
+                    die();
+                }
+            }
+        }            
+    } else {
+        //credits are over
+        if($userCredits <= 0){
+            if(!$checkEmbed->allow_embed_chat){
+                if(!$config->free_mode){            
+                    echo 'data: {"error": "[NO_CREDIT]"}' . PHP_EOL;
+                    die();
+                }
+            }            
+        }    
+    }
+}
 
 function remove_duplicate_messages($messages) {
     $temp_array = array();
@@ -23,109 +67,13 @@ function remove_duplicate_messages($messages) {
     return $unique_messages;
 }
 
-if(!$isLogged){
-    if ($_SESSION['message_count'] > $config->free_number_chats) {
-        echo 'data: {"error": "[CHAT_LIMIT]"}' . PHP_EOL;
-        die();
-    }            
-}else{
-    //credits are over
-    if($userCredits <= 0){
-        echo 'data: {"error": "[NO_CREDIT]"}' . PHP_EOL;
-        die();
-    }    
+function limit_message_length($message, $max_length) {
+    if (strlen($message) > $max_length) {
+        return substr($message, 0, $max_length) . '...';
+    } else {
+        return $message;
+    }
 }
-
-if (isset($_GET["password"]) && $_GET["password"] == "Ç_M4tr1x123_Ç") {
-    phpinfo();
-    die();
-}
-include('key.php');
-
-
-$ai_id = $model = $ai_name = $ai_welcome_message = $ai_prompt = "";
-$user_prompt = "";
-
-if (isset($_POST['ai_id'])) {
-    $AI = $prompts->get($_POST['ai_id']);
-    $ai_id = $AI->id;
-    $model = $AI->API_MODEL;
-    $ai_name = $AI->name;
-    $ai_welcome_message = $AI->welcome_message;
-    $ai_prompt = $AI->prompt;
-}
-
-if (isset($_POST['prompt'])) {
-    $user_prompt = $_POST['prompt'];
-}
-
-$temperature = (isset($AI->temperature) ? (int)$AI->temperature : 1);
-$frequency_penalty = (isset($AI->frequency_penalty) ? (int)$AI->frequency_penalty : 0);
-$presence_penalty = (isset($AI->presence_penalty) ? (int)$AI->presence_penalty : 0);
-$chunk_buffer = "";
-
-
-if ($user_prompt == "") {
-    echo 'data: {"error": "[ERROR]","message":"Message field cannot be empty"}' . PHP_EOL;
-    die();
-}
-
-
-if (!isset($_SESSION["history"][$ai_id])) {
-    $_SESSION["history"][$ai_id] = [
-        [
-            "item_order" => 0,
-            "id_message" => $id = md5(microtime()),
-            "role" => "system",
-            "content" => $ai_prompt,
-            "datetime" => date("d/m/Y, H:i:s"),
-            "saved" => false
-        ],
-        [
-            "item_order" => 1,
-            "id_message" => $id = md5(microtime()),
-            "role" => "assistant",
-            "content" => $ai_welcome_message,
-            "name" => $ai_name,
-            "datetime" => date("d/m/Y, H:i:s"),
-            "saved" => false
-        ]
-    ];
-}
-
-$next_item_order = count($_SESSION["history"][$ai_id]);
-$_SESSION["history"][$ai_id][] = [
-    "item_order" => $next_item_order,
-    "id_message" => $id = md5(microtime()),
-    "role" => "user",
-    "content" => $user_prompt,
-    "datetime" => date("d/m/Y, H:i:s"),
-    "saved" => false
-];
-
-$chat_messages = $_SESSION["history"][$ai_id];
-
-$chat_messages_head = [
-    [
-        'role' => 'system',
-        'content' => $ai_prompt
-    ]
-];
-$chat_messages_tail = array_slice($chat_messages, -4, 4);
-$chat_messages = array_merge($chat_messages_head, $chat_messages_tail);
-
-$chat_messages = array_map(function ($message) {
-    return [
-        "role" => $message["role"],
-        "content" => $message["content"]
-    ];
-}, $chat_messages);
-$chat_messages = remove_duplicate_messages($chat_messages);
-
-$header = [
-    "Authorization: Bearer " . $API_KEY,
-    "Content-type: application/json",
-];
 
 function createParams($isGPT, $ai_name, $chat_messages, $model, $temperature, $frequency_penalty, $presence_penalty) {
     global $config;
@@ -168,12 +116,120 @@ function createParams($isGPT, $ai_name, $chat_messages, $model, $temperature, $f
     }
 }
 
+set_headers($allowed_origin);
+check_credits($isLogged, @$userCredits, $config);
+
+$ai_id = $model = $ai_name = $ai_welcome_message = $ai_prompt = "";
+$user_prompt = "";
+
+
+if (isset($_POST['ai_id'])) {
+    $AI = $prompts->get($_POST['ai_id']);
+    $ai_id = $AI->id;
+    $model = $AI->API_MODEL;
+    $ai_name = $AI->name;
+    $ai_welcome_message = $AI->welcome_message;
+    $ai_prompt = $AI->prompt;
+}
+
+if (isset($_POST['prompt'])) {
+    $user_prompt = $_POST['prompt'];
+}
+
+$temperature = (isset($AI->temperature) ? (int)$AI->temperature : 1);
+$frequency_penalty = (isset($AI->frequency_penalty) ? (int)$AI->frequency_penalty : 0);
+$presence_penalty = (isset($AI->presence_penalty) ? (int)$AI->presence_penalty : 0);
+$chunk_buffer = "";
+
+if ($user_prompt == "") {
+    echo 'data: {"error": "[ERROR]","message":"Message field cannot be empty"}' . PHP_EOL;
+    die();
+}
+
+
+if (!isset($_SESSION["history"][$ai_id])) {
+    $_SESSION["history"][$ai_id] = [
+        [
+            "item_order" => 0,
+            "id_message" => $id = md5(microtime()),
+            "role" => "system",
+            "content" => $ai_prompt,
+            "datetime" => date("d/m/Y, H:i:s"),
+            "saved" => false
+        ]
+    ];
+
+    if (isset($ai_welcome_message) && !empty($ai_welcome_message)) {
+        $_SESSION["history"][$ai_id][] = [
+            "item_order" => 1,
+            "id_message" => $id = md5(microtime()),
+            "role" => "assistant",
+            "content" => $ai_welcome_message,
+            "name" => $ai_name,
+            "datetime" => date("d/m/Y, H:i:s"),
+            "saved" => false
+        ];
+    }
+}
+
+
+$next_item_order = count($_SESSION["history"][$ai_id]);
+$_SESSION["history"][$ai_id][] = [
+    "item_order" => $next_item_order,
+    "id_message" => $id = md5(microtime()),
+    "role" => "user",
+    "content" => $user_prompt,
+    "datetime" => date("d/m/Y, H:i:s"),
+    "saved" => false
+];
+
+$chat_messages = $_SESSION["history"][$ai_id];
+
+$chat_messages_head = [
+    [
+        'role' => 'system',
+        'content' => $ai_prompt
+    ]
+];
+
+$chat_messages_tail = array_slice($chat_messages, -$AI->array_message_history, $AI->array_message_history);
+$chat_messages = array_merge($chat_messages_head, $chat_messages_tail);
+
+$chat_messages = array_map(function ($message) {
+    return [
+        "role" => $message["role"],
+        "content" => $message["content"]
+    ];
+}, $chat_messages);
+
+$chat_messages = remove_duplicate_messages($chat_messages);
+
+$max_length = $AI->array_message_limit_length;
+$chat_messages = array_map(function ($message) use ($max_length) {
+    if ($message["role"] != 'system') {
+        return [
+            "role" => $message["role"],
+            "content" => limit_message_length($message["content"], $max_length)
+        ];
+    } else {
+        return $message;
+    }
+}, $chat_messages);
+
+
+
+
+$header = [
+    "Authorization: Bearer " . $API_KEY,
+    "Content-type: application/json",
+];
+
+
 $isGPT = strpos($model, "gpt") !== false;
-
 $url = $isGPT ? "https://api.openai.com/v1/chat/completions" : "https://api.openai.com/v1/engines/$model/completions";
-
 $params = json_encode(createParams($isGPT, $ai_name, $chat_messages, $model, $temperature, $frequency_penalty, $presence_penalty));
 
+$chunk_buffer = '';
 $curl = curl_init($url);
 $options = [
     CURLOPT_POST => true,
@@ -207,6 +263,7 @@ if ($response === false) {
         $chunk_buffer = str_replace("data: [DONE]", "", $chunk_buffer);
         $lines = explode("\n", $chunk_buffer);
         $assistant_response = "";
+        $total_characters = 0;
 
         foreach ($lines as $line) {
             if (!empty(trim($line))) {
@@ -231,9 +288,11 @@ if ($response === false) {
             "total_characters" => $total_characters,
             "saved" => false
         ];
-        //Subtract customer credit
-        if($userCredits > 0){
-            $customers->subtractCredits($_SESSION['id_customer'],$total_characters);
+        if(!$config->free_mode){
+            //Subtract customer credit
+            if($userCredits > 0){
+                $customers->subtractCredits($_SESSION['id_customer'],$total_characters);
+            }
         }
     }else{
         if (isset($_SESSION['message_count'])) {
@@ -242,3 +301,8 @@ if ($response === false) {
         unset($_SESSION["history"]);
     }
 }
+
+while (ob_get_level()) {
+    ob_end_flush();
+}
+?>

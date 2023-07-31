@@ -37,7 +37,6 @@ require_once("../../inc/header.php");
   </div>  
 </section>
 
-
 <section id="panel-area">
   <div class="container">
     <div class="row">
@@ -120,6 +119,7 @@ require_once("../../inc/header.php");
                         </li>
                                  
                       </ul>
+                       <button onclick="shareChat('<?php echo $base_url."/share/".$showThreads->id_thread; ?>')" class="btn btn-sm btn-outline-primary" alt="<?php echo $lang['share']; ?>" title="<?php echo $lang['share']; ?>"><i class="bi bi bi-share"></i></button>
                     </span>                       
                   </div>
                 </li>
@@ -154,7 +154,7 @@ require_once("../../inc/header.php");
                       <div class="ai-chat-top-info">
                         <div class="ai-chat-top-name"><h4><?php echo $showCustomerChat->name; ?> <span class="online-bullet"></span></h4></div>
                         <div class="ai-chat-top-job"><?php echo $showCustomerChat->expert; ?></div>
-                        <div class="ai-chat-created"><img src="<?php echo $base_url;?>/img/icon-clock.svg"><span><?php echo $showCustomerChat->first_created_at; ?></span></div>
+                        <div class="ai-chat-created"><img src="<?php echo $base_url;?>/img/icon-clock.svg"><span> <?php echo formatDate($showCustomerChat->first_created_at, false); ?></span></div>
                       </div>
                     </div>
 
@@ -171,7 +171,7 @@ require_once("../../inc/header.php");
                     <div class="wrapper-ai-action-messages text-center">
                       <a href="<?php echo $base_url."/panel/view-chats/".$showCustomerChat->slug; ?>" class="btn btn-secondary"><i class="bi bi-plus-circle"></i> <?php echo $lang['btn_view_chats']; ?></a>
                     </div>
-
+                
                   </div>
                 </div>
             <?php } ?>

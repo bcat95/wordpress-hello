@@ -93,7 +93,7 @@ $getCustomerChatCount = $getCustomerChat->rowCount();
 				    	<div class="d-flex align-items-center pt-2 pb-2">
 					    	<img src="<?php echo $base_url; ?>/public_uploads/<?php echo $showCustomerAI->image; ?>" alt="@mdo" width="32" height="32" class="rounded me-2" onerror="this.src='<?php echo $base_url; ?>/admin/img/placeholder.jpg'">
 					      	<div class="fw-bold"><?php echo $showCustomerAI->name; ?></div>
-					      	<span class="badge bg-primary rounded-pill ms-2"><?php echo $showCustomerAI->num_messages; ?> messages</span>
+					      	<span class="badge bg-primary rounded-pill ms-2"><?php echo $showCustomerAI->num_messages - $countThreads; ?> messages</span>
 					      	<span class="badge bg-primary rounded-pill ms-2"><?php echo $countThreads; ?> threads</span>
 				      	</div>
 				      	

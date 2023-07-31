@@ -17,4 +17,8 @@ class Languages extends Action{
         return $this->query("SELECT * FROM $this->table WHERE isDefault='1' LIMIT 1")->Fetch();
     }
 
+    public function getMaxOrder() {
+        return $this->query("SELECT MAX(item_order) AS max_order FROM $this->table")->Fetch();
+    }    
+
 }

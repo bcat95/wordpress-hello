@@ -17,7 +17,7 @@ if ($isFetchRequest) {
 }
 
 // If the user is logged in, update the session history with the messages
-if ($isLogged) {
+if ($isLogged && !@$share) {
     function updateSessionHistory($AI_id, $messagesDatabase)
     {
         // Create an empty array for the history of the current AI

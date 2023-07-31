@@ -85,7 +85,7 @@ function loadPreviewImage(event, previewId) {
         if (!event.target.checkValidity()) {
           event.preventDefault();
           event.stopPropagation();
-          showToast('formErrorToast'); 
+          showToast('formErrorToast');
         }
         event.target.classList.add('was-validated');
       });
@@ -159,10 +159,11 @@ $(document).ready(function () {
     });
 });
 
-$(".btn-save-absolute").on("click", function(){
-  $(".submit-button").click()
-})
-
+$(".btn-save-absolute").on("click", function() {
+  if (!$(this).hasClass("submit-button-ajax")) {
+    $(".submit-button").click();
+  }
+});
 // Função para rolar até o primeiro campo inválido
 function scrollToFirstInvalidField() {
     const firstInvalidField = $('.form-control.is-invalid, .was-validated .form-control:invalid').first();
@@ -391,17 +392,17 @@ function getMessagesJson(thread){
     });
 }   
 
-//Slugy inputs
 window.onload = function() {
     var nameInput = document.getElementById('floatingInputName');
     var slugInput = document.getElementById('floatingInputSlug');
-
-    if (!nameInput && !slugInput) {
+    
+    if (!nameInput || !slugInput) {
+        // One or both of the elements were not found, so we can't proceed with the script.
         return;
     }
 
     nameInput.oninput = function() {
-        // slugInput.value = slugify(this.value);
+        slugInput.value = slugify(this.value);
     }
 
     function slugify(text) {
@@ -413,6 +414,7 @@ window.onload = function() {
             .replace(/-+$/, '');            // Trim - do final do texto
     }
 }
+
 
 function checkOrderDetails(id_order) {
     $("#purchase-details").html(`<div class="spinner-border" role="status"></div>`);
@@ -492,26 +494,31 @@ function aproveOrder(id_order) {
     .catch(error => console.error('Error:', error));
 }
 
-  //Show and hide password fields
-  document.addEventListener("DOMContentLoaded", function() {
-    const togglePasswordIcon = document.querySelector(".toggle-password");
+    document.addEventListener("DOMContentLoaded", function() {
+    const passwordFields = document.querySelectorAll("[data-toggle-password]");
 
-    if (togglePasswordIcon) {
-      togglePasswordIcon.addEventListener("click", function() {
-        const passwordInput = document.getElementById("floatingPassword");
-        const passwordType = passwordInput.getAttribute("type");
+    passwordFields.forEach(field => {
+      const togglePasswordIcon = field.querySelector(".toggle-password");
 
-        if (passwordType === "password") {
-          passwordInput.setAttribute("type", "text");
-          togglePasswordIcon.classList.remove("bi-eye-slash");
-          togglePasswordIcon.classList.add("bi-eye");
-        } else {
-          passwordInput.setAttribute("type", "password");
-          togglePasswordIcon.classList.remove("bi-eye");
-          togglePasswordIcon.classList.add("bi-eye-slash");
-        }
-      });
-    }
+      if (togglePasswordIcon) {
+        togglePasswordIcon.addEventListener("click", function() {
+          const passwordInput = field.querySelector("input[type=password], input[type=text]");
+          if (passwordInput) {
+            const passwordType = passwordInput.getAttribute("type");
+
+            if (passwordType === "password") {
+              passwordInput.setAttribute("type", "text");
+              togglePasswordIcon.classList.remove("bi-eye-slash");
+              togglePasswordIcon.classList.add("bi-eye");
+            } else {
+              passwordInput.setAttribute("type", "password");
+              togglePasswordIcon.classList.remove("bi-eye");
+              togglePasswordIcon.classList.add("bi-eye-slash");
+            }
+          }
+        });
+      }
+    });
   });
 
   //Password Strength
@@ -597,3 +604,535 @@ $(document).on('click', '.removeDescription', function() {
     }
 });  
 
+//Google translate API
+document.addEventListener("DOMContentLoaded", function() {
+
+const languageOptions = [
+    { value: 'en', text: 'English' },
+    { value: 'af', text: 'Afrikaans' },
+    { value: 'sq', text: 'Albanian' },
+    { value: 'am', text: 'Amharic' },
+    { value: 'ar', text: 'Arabic' },
+    { value: 'hy', text: 'Armenian' },
+    { value: 'az', text: 'Azerbaijani' },
+    { value: 'eu', text: 'Basque' },
+    { value: 'be', text: 'Belarusian' },
+    { value: 'bn', text: 'Bengali' },
+    { value: 'bs', text: 'Bosnian' },
+    { value: 'bg', text: 'Bulgarian' },
+    { value: 'ca', text: 'Catalan' },
+    { value: 'ceb', text: 'Cebuano' },
+    { value: 'ny', text: 'Chichewa' },
+    { value: 'zh-CN', text: 'Chinese (Simplified)' },
+    { value: 'zh-TW', text: 'Chinese (Traditional)' },
+    { value: 'co', text: 'Corsican' },
+    { value: 'hr', text: 'Croatian' },
+    { value: 'cs', text: 'Czech' },
+    { value: 'da', text: 'Danish' },
+    { value: 'nl', text: 'Dutch' },
+    { value: 'eo', text: 'Esperanto' },
+    { value: 'et', text: 'Estonian' },
+    { value: 'tl', text: 'Filipino' },
+    { value: 'fi', text: 'Finnish' },
+    { value: 'fr', text: 'French' },
+    { value: 'fy', text: 'Frisian' },
+    { value: 'gl', text: 'Galician' },
+    { value: 'ka', text: 'Georgian' },
+    { value: 'de', text: 'German' },
+    { value: 'el', text: 'Greek' },
+    { value: 'gu', text: 'Gujarati' },
+    { value: 'ht', text: 'Haitian Creole' },
+    { value: 'ha', text: 'Hausa' },
+    { value: 'haw', text: 'Hawaiian' },
+    { value: 'iw', text: 'Hebrew' },
+    { value: 'hi', text: 'Hindi' },
+    { value: 'hmn', text: 'Hmong' },
+    { value: 'hu', text: 'Hungarian' },
+    { value: 'is', text: 'Icelandic' },
+    { value: 'ig', text: 'Igbo' },
+    { value: 'id', text: 'Indonesian' },
+    { value: 'ga', text: 'Irish' },
+    { value: 'it', text: 'Italian' },
+    { value: 'ja', text: 'Japanese' },
+    { value: 'jw', text: 'Javanese' },
+    { value: 'kn', text: 'Kannada' },
+    { value: 'kk', text: 'Kazakh' },
+    { value: 'km', text: 'Khmer' },
+    { value: 'ko', text: 'Korean' },
+    { value: 'ku', text: 'Kurdish (Kurmanji)' },
+    { value: 'ky', text: 'Kyrgyz' },
+    { value: 'lo', text: 'Lao' },
+    { value: 'la', text: 'Latin' },
+    { value: 'lv', text: 'Latvian' },
+    { value: 'lt', text: 'Lithuanian' },
+    { value: 'lb', text: 'Luxembourgish' },
+    { value: 'mk', text: 'Macedonian' },
+    { value: 'mg', text: 'Malagasy' },
+    { value: 'ms', text: 'Malay' },
+    { value: 'ml', text: 'Malayalam' },
+    { value: 'mt', text: 'Maltese' },
+    { value: 'mi', text: 'Maori' },
+    { value: 'mr', text: 'Marathi' },
+    { value: 'mn', text: 'Mongolian' },
+    { value: 'my', text: 'Myanmar (Burmese)' },
+    { value: 'ne', text: 'Nepali' },
+    { value: 'no', text: 'Norwegian' },
+    { value: 'or', text: 'Odia' },
+    { value: 'ps', text: 'Pashto' },
+    { value: 'fa', text: 'Persian' },
+    { value: 'pl', text: 'Polish' },
+    { value: 'pt', text: 'Portuguese' },
+    { value: 'pa', text: 'Punjabi' },
+    { value: 'ro', text: 'Romanian' },
+    { value: 'ru', text: 'Russian' },
+    { value: 'sm', text: 'Samoan' },
+    { value: 'gd', text: 'Scots Gaelic' },
+    { value: 'sr', text: 'Serbian' },
+    { value: 'st', text: 'Sesotho' },
+    { value: 'sn', text: 'Shona' },
+    { value: 'sd', text: 'Sindhi' },
+    { value: 'si', text: 'Sinhala' },
+    { value: 'sk', text: 'Slovak' },
+    { value: 'sl', text: 'Slovenian' },
+    { value: 'so', text: 'Somali' },
+    { value: 'es', text: 'Spanish' },
+    { value: 'su', text: 'Sundanese' },
+    { value: 'sw', text: 'Swahili' },
+    { value: 'sv', text: 'Swedish' },
+    { value: 'tg', text: 'Tajik' },
+    { value: 'ta', text: 'Tamil' },
+    { value: 'tt', text: 'Tatar' },
+    { value: 'te', text: 'Telugu' },
+    { value: 'th', text: 'Thai' },
+    { value: 'tr', text: 'Turkish' },
+    { value: 'tk', text: 'Turkmen' },
+    { value: 'uk', text: 'Ukrainian' },
+    { value: 'ur', text: 'Urdu' },
+    { value: 'ug', text: 'Uyghur' },
+    { value: 'uz', text: 'Uzbek' },
+    { value: 'vi', text: 'Vietnamese' },
+    { value: 'cy', text: 'Welsh' },
+    { value: 'xh', text: 'Xhosa' },
+    { value: 'yi', text: 'Yiddish' },
+    { value: 'yo', text: 'Yoruba' },
+    { value: 'zu', text: 'Zulu' },
+  ];
+  
+let translateBtn = document.getElementById('translateBtn');
+let initialBtnText;
+
+if (translateBtn) {
+  let sourceLangSelect = document.getElementById('sourceLangSelect');
+  let targetLangSelect = document.getElementById('targetLangSelect');
+  console.log(sourceLangSelect)
+
+  if (sourceLangSelect && targetLangSelect) {
+    initialBtnText = translateBtn.innerHTML;
+
+    languageOptions.forEach(language => {
+      let option1 = document.createElement('option');
+      option1.value = language.value;
+      option1.text = language.text;
+      sourceLangSelect.appendChild(option1);
+
+      let option2 = document.createElement('option');
+      option2.value = language.value;
+      option2.text = language.text;
+      targetLangSelect.appendChild(option2);
+    });
+  }
+}
+
+  function validateApiKey() {
+    if (!YOUR_API_KEY) {
+      toastr.error("Please provide a valid API key.")
+      return false;
+    }
+    return true;
+  }
+
+async function translateFields(sourceLang, targetLang) {
+  // check if both source and target languages are selected
+  if (!sourceLang || !targetLang) {
+    toastr.error("Please select both source and target languages.")
+    return;
+  }
+
+  // check if the API key is valid
+  if (!validateApiKey()) {
+    return;
+  }
+  
+  translateBtn.disabled = true;
+  translateBtn.innerHTML = '<div class="spinner-border"></div>';
+
+  let form = document.getElementById('form');
+  let elements = form.elements;
+
+  for (let element of elements) {
+    if (
+      element.value !== undefined &&
+      element.value !== '' &&
+      element.value !== 'slug' &&
+      element.type !== 'number' &&
+      element.type !== 'checkbox' &&
+      element.type !== 'select-one' &&
+      element.type !== 'select-multiple' &&
+      element.type !== 'hidden'
+    ) {
+      let url = new URL('https://translation.googleapis.com/language/translate/v2');
+
+      url.search = new URLSearchParams({
+        key: YOUR_API_KEY,
+        q: element.value,
+        source: sourceLang,
+        target: targetLang,
+        format: 'text'
+      })
+
+      try {
+        let response = await fetch(url, { method: 'GET' });
+        if (response.ok) {
+          let data = await response.json();
+          let translatedText = data.data.translations[0].translatedText;
+
+          if (element.type === 'text' || element.type === 'textarea') {
+            element.value = translatedText;
+            element.focus(); // Faz um "focus" no campo input
+            element.style.backgroundColor = "#d3f1ff";
+
+            setTimeout(function() {
+              element.style.backgroundColor = ""; 
+            }, 2000);
+          } else {
+            console.log('Cannot set value of element of type ' + element.type);
+          }
+        } else {
+          throw response;
+        }
+      } catch (error) {
+        if (error.status === 400) {
+          toastr.error('API key not valid. Please pass a valid API key.');
+        } else {
+          console.error('Error:', error);
+        }
+        break;  // stop the loop
+      }
+    }
+  }
+
+  translateBtn.disabled = false;
+  translateBtn.innerHTML = initialBtnText;
+  toastr.success("Fields successfully translated");
+}
+
+
+  if (translateBtn) {
+    translateBtn.addEventListener('click', function() {
+      let sourceLang = sourceLangSelect.options[sourceLangSelect.selectedIndex].value;
+      let targetLang = targetLangSelect.options[targetLangSelect.selectedIndex].value;
+      translateFields(sourceLang, targetLang);
+    });
+  }
+});
+
+
+$(".btn-show-embed-code").on("click", function(){
+  var slug = $(this).attr("data-slug");
+  var base_url = window.location.protocol + "//" + window.location.hostname;
+  $("#modal-copy-code-body").html("")
+  $("#modal-copy-code-body").html(`<pre>
+&lt;script type="text/javascript"&gt;
+    let chatWidget = document.createElement('div');
+    chatWidget.id = 'chat-widget';
+    document.currentScript.parentNode.insertBefore(chatWidget, document.currentScript);
+    let iframe = document.createElement('iframe');
+    iframe.src = '${base_url}/chat/${slug}?embed_chat=true';
+    iframe.width = '100%';
+    iframe.height = '950';
+    iframe.style.border = '0';
+    chatWidget.appendChild(iframe);
+&lt;/script&gt;          
+</pre> `)
+})
+
+
+  // Function to copy the content of a specified div
+  function copyContent(divId) {
+    // Select the div that contains the code to be copied
+    var codeDiv = document.getElementById(divId);
+
+    // Create a range object to select the content
+    var range = document.createRange();
+    range.selectNode(codeDiv);
+
+    // Add the range to the selection
+    var selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    // Copy the selected content to the clipboard
+    document.execCommand("copy");
+
+    // Clear the selection
+    selection.removeAllRanges();
+
+    // Display a message indicating that the content has been copied
+    toastr.info("The content has been copied to the clipboard!");
+  }
+
+document.addEventListener('DOMContentLoaded', function() {
+var btnCreatePost = document.querySelector('.btn-create-post-ai');
+    if (btnCreatePost) {
+    document.querySelector('.btn-create-post-ai').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        let id_prompt = document.querySelector('#textPrompt').value;
+        let summary = document.querySelector('#summary').value;
+        let audience = document.querySelector('#audience').value;
+        let keywords = document.querySelector('#keywords').value;
+        let minParagraphs = document.querySelector('#minParagraphs').value;
+        let maxParagraphs = document.querySelector('#maxParagraphs').value;
+        let writingStyle = document.querySelector('#id_prompts_writing_default').value;
+        let textTone = document.querySelector('#id_prompts_tone_default').value;
+        let language = document.querySelector('#id_prompts_output_default').value;
+
+        // Obtenha os valores dos campos
+        let idPromptValue = document.querySelector('#textPrompt').value;
+        let summaryValue = document.querySelector('#summary').value;
+        let keywordsValue = document.querySelector('#keywords').value;
+
+        // Validação dos campos
+        let idPromptValid = idPromptValue.trim() !== '';
+        let summaryValid = summaryValue.trim() !== '';
+        let keywordsValid = keywordsValue.trim() !== '';
+
+        // Atualiza as classes dos campos
+        document.querySelector('#textPrompt').classList.toggle('is-invalid', !idPromptValid);
+        document.querySelector('#summary').classList.toggle('is-invalid', !summaryValid);
+        document.querySelector('#keywords').classList.toggle('is-invalid', !keywordsValid);
+
+        // Verifica se todos os campos são válidos
+        if (!idPromptValid || !summaryValid || !keywordsValid) {
+            return; // Interrompe a execução do script
+        }
+
+        let textarea = document.querySelector('#textarea-content');
+
+        let postData = {
+            id_prompt: id_prompt,
+            summary: summary,
+            audience: audience,
+            keywords: keywords,
+            minParagraphs: minParagraphs,
+            maxParagraphs: maxParagraphs,
+            writingStyle: writingStyle,
+            textTone: textTone,
+            language: language,
+        };
+
+        let postDataString = JSON.stringify(postData);;
+
+        let source = new SSE("/admin/modules/posts/post-api.php", {
+            headers: { "Content-Type": "application/json" },
+            payload: postDataString,
+            method: "POST",
+        });
+
+        source.addEventListener("message", function(event) {
+            processServerResponse(event, textarea);
+        });
+
+        source.stream();
+
+        let button = document.querySelector('.btn-create-post-ai');
+        button.disabled = true;
+        button.innerHTML = '<div class="spinner-border text-white"></div>';    
+
+        function processServerResponse(event, textarea) {
+          let data = event.data;
+
+          if (data.startsWith("data: ")) {
+            data = data.substring(6);
+          }
+
+          if (data === '[DONE]') {
+            button.disabled = false;
+            button.innerHTML = '<i class="bi bi-cpu fs-6"></i> Create text';
+            var divContent = document.getElementById('modal-output-post-body').innerHTML;
+            var cleanText = divContent.replace(/<\/?[^>]+(>|$)/g, '').replace(/&nbsp;/g, ' ');
+            document.getElementById('modal-output-post-body').innerHTML = cleanText;
+            renderMarkdown();
+          }
+
+          try {
+              const jsonData = JSON.parse(data);
+
+              if (jsonData.error && jsonData.error.message) {
+                  // Exibe a mensagem de erro
+                  toastr.error(jsonData.error.message);
+                  button.disabled = false;
+                  button.innerHTML = '<i class="bi bi-cpu fs-6"></i> Create text';
+              }
+
+              if (jsonData.choices && jsonData.choices.length > 0) {
+                  const delta = jsonData.choices[0].delta;
+                  if (delta && delta.content) {
+                      const content = delta.content;
+                      $("#modal-output-post-body").append(content)
+                  }
+              }
+          } catch (error) {
+              //console.log("An error occurred: " + error.message);
+              button.disabled = false;
+              button.innerHTML = '<i class="bi bi-cpu fs-6"></i> Create text';
+          }
+        }
+    });
+  }
+});
+
+
+
+function renderMarkdown() {
+  const markdownText = document.getElementById('modal-output-post-body').textContent; // Obtém o texto Markdown
+
+  // Cria um novo renderizador com a função de cabeçalho personalizada
+  const renderer = new marked.Renderer();
+  renderer.heading = function (text, level) {
+    return `<h${level}>${text}</h${level}>`;
+  };
+
+  const htmlText = marked(markdownText, { renderer: renderer });
+  document.getElementById('modal-output-post-body').innerHTML = htmlText;
+}
+
+function copyAITextPost() {
+    // Obter o elemento com o conteúdo
+    var el = document.getElementById('modal-output-post-body');
+
+    // Obter o conteúdo atual do editor TinyMCE
+    var currentContent = tinymce.activeEditor.getContent();
+
+    // Verificar se o editor está vazio ou a primeira linha contém apenas a quebra de linha
+    if(currentContent.trim() === '' || currentContent.trim() === '<p><br></p>'){
+        // Se estiver vazio ou apenas com quebra de linha, substitua o conteúdo pelo novo texto
+        tinymce.activeEditor.setContent(el.innerHTML);
+    } else {
+        // Se não estiver vazio, adicione o novo texto ao final
+        tinymce.activeEditor.insertContent('<br>' + el.innerHTML);
+    }
+
+    $('#modalOutputBlogText').modal('hide');
+}
+
+
+
+// Ao carregar a página
+document.addEventListener('DOMContentLoaded', function() {
+
+setTimeout(function(){
+  var tabContent = document.getElementById('tab-content');
+  var spinerLoadingSettings = document.getElementById('spiner-loading-settings');
+
+  if (tabContent !== null && spinerLoadingSettings !== null) {
+    tabContent.style.display = "flex";
+    spinerLoadingSettings.style.display = "none";
+  }
+}, 100);
+
+
+  // Remova a classe 'active' do primeiro botão da tab 
+  // (ajuste o seletor abaixo para corresponder ao seu HTML)
+  var firstTabButton = document.querySelector('.tab-container .nav-link');
+  if (firstTabButton) {
+    firstTabButton.classList.remove('active');
+  }
+
+  // Verifique se há um fragmento de URL
+  var hash = window.location.hash;
+
+  if (hash) {
+    // Remova o símbolo '#' do hash
+    var tabId = hash.slice(1);
+
+    // Encontre o botão da tab correspondente
+    var tabButton = document.getElementById(tabId);
+
+    if (tabButton) {
+      // Crie uma nova instância da Tab
+      var tab = new bootstrap.Tab(tabButton);
+
+      // Armazene o hash no campo de entrada
+      var urlHashInput = document.getElementById('settings_url_hash');
+      urlHashInput.value = tabId;
+      
+      // Mostre a tab
+      tab.show();
+    }
+  } else {
+    // Caso não haja um hash na URL, defina a primeira tab como ativa
+    if (firstTabButton) {
+      var firstTab = new bootstrap.Tab(firstTabButton);
+      firstTab.show();
+    }
+  }
+
+  // Adicione um ouvinte de evento 'shown.bs.tab' para cada link de navegação
+  var navLinks = document.querySelectorAll('.nav-link');
+
+  navLinks.forEach(function(navLink) {
+    navLink.addEventListener('shown.bs.tab', function(e) {
+      // Atualize a URL sem recarregar a página
+      var tabId = e.target.id;
+      history.replaceState(null, null, '#' + tabId);
+
+      // Armazene o hash no campo de entrada
+      var urlHashInput = document.getElementById('settings_url_hash');
+      urlHashInput.value = tabId;
+
+      for (var i = 0; i < myCodeMirrors.length; i++) {
+        myCodeMirrors[i].refresh();
+      }
+
+    });
+  });
+});
+
+$(".submit-button-ajax").on("click", function(e) {
+  e.preventDefault();
+  tinymce.triggerSave(); 
+
+  var form = $("#form")[0];
+  var formData = new FormData(form);
+
+  formData.append("refer", "ajax");
+
+  if (form.checkValidity()) {
+    $.ajax({
+      url: $(form).attr("action"),
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        console.log(response);
+        var parsedResponse = JSON.parse(response);
+        if (parsedResponse.status === "success") {
+          toastr.success(parsedResponse.message);
+        } else {
+          toastr.error(parsedResponse.message);
+        }
+      },
+      error: function(xhr, status, error) {
+        toastr.error("Error updating data, check all fields.", error);
+      }
+    });
+  } else {
+    // Se o formulário for inválido, evite o envio e exiba as mensagens de erro
+    e.stopPropagation();
+    form.classList.add('was-validated');
+    scrollToFirstInvalidField();
+    showToast('formErrorToast');
+  }
+});

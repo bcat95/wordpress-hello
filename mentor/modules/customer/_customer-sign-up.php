@@ -1,8 +1,13 @@
 <?php 
+$use_bootstrap_icons = true;
 $use_recaptcha = true;
 $no_footer = true;
 $no_header = true;
 require_once("../../inc/includes.php");
+
+if(isset($config->display_header_sign_up) && $config->display_header_sign_up){
+  $no_header = false;
+}
 define('META_TITLE', $seoConfig['sign_up_meta_title']);
 define('META_DESCRIPTION', $seoConfig['sign_up_meta_description']);
 require_once("../../inc/header.php");

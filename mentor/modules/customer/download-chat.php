@@ -5,10 +5,18 @@ require_once("../../inc/includes.php");
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Style\Font;
+$share = false;
+if(isset($_GET['share']) && $_GET['share']){
+    $share = true;
+}
+
 
 if(!$isLogged){
-	redirect($base_url.'/chat/'.$_REQUEST['ai'], $lang['login_prompt_downloading_file'], 'error');
+    if(!$share){
+	   redirect($base_url.'/chat/'.$_REQUEST['ai'], $lang['login_prompt_downloading_file'], 'error');
+    }
 }
+
 
 $getMessages = $messages->getByThread($_REQUEST['thread']);
 $checkAIName = $getMessages->fetch();
@@ -18,15 +26,9 @@ if(!$checkAIName){
 	redirect($base_url.'/chat/'.$_REQUEST['ai'], "Thread not found", 'error');	
 }
 
-$getCustomer = $customers->get($_SESSION['id_customer']);
+
+$getCustomer = $customers->get($checkAIName->id_customer);
 $getAI = $prompts->get($checkAIName->id_prompt);
-
-
-if($_SESSION['id_customer'] != $checkAIName->id_customer){
-    if(!$_SESSION['admin_id']){
-	   redirect($base_url.'/chat/'.$_REQUEST['ai'], "Thread not found", 'error');	
-    }
-}
 
 
 // Nomes personalizados

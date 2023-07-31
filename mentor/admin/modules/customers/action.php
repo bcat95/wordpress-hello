@@ -2,10 +2,7 @@
 $module_name = "customers";
 require_once(__DIR__."/../../inc/restrict.php");
 require_once(__DIR__."/../../inc/includes.php");
-if($config->demo_mode){
-    redirect("/admin/{$module_name}", "This option is not available in demo mode.", "error");
-    exit();
-}  
+
 
 function handleAction($module_name, $action, $id = null) {
     global $$module_name;
@@ -47,7 +44,7 @@ function handleAction($module_name, $action, $id = null) {
 
     if ($message) {
         $messageType = $result ? 'success' : 'error';
-        redirect("/admin/{$module_name}", $message, $messageType);
+        redirect("/admin/{$module_name}", $message, $messageType, (isset($_POST['refer']) && $_POST['refer'] === 'ajax') ? true : false);
     }
 }
 
