@@ -1,0 +1,24 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once("../../inc/includes.php");
+$AI = $prompts->getBySlug($_REQUEST['slug']);
+if($AI->id){
+    
+    if (isset($_SESSION['history'][$AI->id])) {
+        unset($_SESSION['history'][$AI_ID]);
+    }
+    if (isset($_SESSION['threads'][$AI->id])) {
+        unset($_SESSION['threads'][$AI->id]);
+    }
+    if (isset($_GET['chat'])) {
+        unset($_GET['chat']);
+    }
+
+    header("location:".$base_url."/chat/".$AI->slug);
+    die();    
+}else{
+    header("location:".$base_url."/");
+    die();
+}
