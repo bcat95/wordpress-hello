@@ -608,7 +608,7 @@
 	    }
 
 	    $img.attr({
-	        "src": "http://teste.local/img/btn_tts_" + (play ? "play" : "stop") + ".svg",
+	        "src": "../img/btn_tts_" + (play ? "play" : "stop") + ".svg",
 	        "data-play": play ? "false" : "true"
 	    });
 

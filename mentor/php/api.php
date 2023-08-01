@@ -68,11 +68,10 @@ function remove_duplicate_messages($messages) {
 }
 
 function limit_message_length($message, $max_length) {
-    if (strlen($message) > $max_length) {
-        return substr($message, 0, $max_length) . '...';
-    } else {
-        return $message;
+    if (mb_strlen($message, 'UTF-8') > $max_length) {
+        $message = mb_substr($message, 0, $max_length, 'UTF-8');
     }
+    return $message;
 }
 
 function createParams($isGPT, $ai_name, $chat_messages, $model, $temperature, $frequency_penalty, $presence_penalty) {
@@ -121,7 +120,6 @@ check_credits($isLogged, @$userCredits, $config);
 
 $ai_id = $model = $ai_name = $ai_welcome_message = $ai_prompt = "";
 $user_prompt = "";
-
 
 if (isset($_POST['ai_id'])) {
     $AI = $prompts->get($_POST['ai_id']);
@@ -183,6 +181,7 @@ $_SESSION["history"][$ai_id][] = [
     "saved" => false
 ];
 
+
 $chat_messages = $_SESSION["history"][$ai_id];
 
 $chat_messages_head = [
@@ -192,21 +191,21 @@ $chat_messages_head = [
     ]
 ];
 
+$max_length = $AI->array_message_limit_length;
 $chat_messages_tail = array_slice($chat_messages, -$AI->array_message_history, $AI->array_message_history);
 $chat_messages = array_merge($chat_messages_head, $chat_messages_tail);
 
-$chat_messages = array_map(function ($message) {
-    return [
-        "role" => $message["role"],
-        "content" => $message["content"]
-    ];
+$chat_messages = array_map(function ($message) use ($max_length) {
+    if ($message["role"] == 'user' || $message["role"] == 'assistant') {
+        $message["content"] = limit_message_length($message["content"], $max_length);
+    }
+    return $message;
 }, $chat_messages);
 
 $chat_messages = remove_duplicate_messages($chat_messages);
 
-$max_length = $AI->array_message_limit_length;
 $chat_messages = array_map(function ($message) use ($max_length) {
-    if ($message["role"] != 'system') {
+    if ($message["role"] == 'user' || $message["role"] == 'assistant') {
         return [
             "role" => $message["role"],
             "content" => limit_message_length($message["content"], $max_length)
@@ -216,10 +215,12 @@ $chat_messages = array_map(function ($message) use ($max_length) {
     }
 }, $chat_messages);
 
+
 $header = [
     "Authorization: Bearer " . $API_KEY,
     "Content-type: application/json",
 ];
+
 
 $isGPT = strpos($model, "gpt") !== false;
 $url = $isGPT ? "https://api.openai.com/v1/chat/completions" : "https://api.openai.com/v1/engines/$model/completions";

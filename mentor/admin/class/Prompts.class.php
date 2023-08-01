@@ -14,7 +14,7 @@ class Prompts extends Action{
     }
 
     public function getListFront() {
-        return $this->query("SELECT id, name, slug, image, expert, demo FROM $this->table WHERE status='1' ORDER BY item_order ASC");
+        return $this->query("SELECT id, name, slug, image, expert FROM $this->table WHERE status='1' ORDER BY item_order ASC");
     }
 
     public function getMaxOrder() {
