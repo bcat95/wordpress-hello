@@ -33,6 +33,8 @@
   <link itemprop="thumbnailUrl" href="<?php echo $base_url; ?>/img/thumb.jpg">
   <link rel="icon" type="image/x-icon" href="<?php echo ($getTheme->image_fav) ? $base_url.'/public_uploads/'.$getTheme->image_fav : $base_url.'/favicon.ico'; ?>">
   <?php require_once("styles.php");?>
+  <link href="/style/bcat.css?v=230731_01" rel="stylesheet">
+  <script defer src="/app-load.js?v=230731_01"></script>
 </head>
 
 <body class="<?php 

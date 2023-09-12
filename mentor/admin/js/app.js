@@ -406,13 +406,17 @@ window.onload = function() {
     }
 
     function slugify(text) {
-        return text.toString().toLowerCase()
-            .replace(/\s+/g, '-')           // Substituir espaços por -
-            .replace(/[^\w\-]+/g, '')       // Remover todos os caracteres não palavras
-            .replace(/\-\-+/g, '-')         // Substituir múltiplos - por um único -
-            .replace(/^-+/, '')             // Trim - do início do texto
-            .replace(/-+$/, '');            // Trim - do final do texto
-    }
+      const normalizedText = text.toString().toLowerCase().normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')  // Remove caracteres acentuados (combining diacritical marks)
+
+      return normalizedText
+          .replace(/\s+/g, '-')            // Substituir espaços por -
+          .replace(/[^\w\-]+/g, '')        // Remover todos os caracteres não palavras
+          .replace(/\-\-+/g, '-')          // Substituir múltiplos - por um único -
+          .replace(/^-+/, '')              // Trim - do início do texto
+          .replace(/-+$/, '');             // Trim - do final do texto
+  }
+
 }
 
 

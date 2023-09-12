@@ -111,7 +111,51 @@ $getCategories = $categories->getListFrontLimit($config->display_categories_home
                 </div>
             </div>
         </div>
-        <?php } ?>            
+        <?php } ?>
+
+        <?php
+        $getPost = $posts->getListFront(1, 6); 
+        ?>       
+        <div class="row mt-5">
+            <div class="col py-2">
+                <h3 class="title-default text-center mb-3 mt-4"><?php echo $lang['blog_title']; ?></h3>
+                <p><?php echo $lang['blog_sub_title']; ?></p>
+            </div>
+        </div>    
+
+        <div class="row">
+          <?php foreach ($getPost as $showPosts) {?>
+          <div class="col-lg-4 col-md-6 col-12">
+
+            <div class="wrapper-card-post d-flex flex-column">
+              <div class="card-post-image">
+                 <a href="<?php echo $base_url; ?>/blog/<?php echo $showPosts->slug;?>">
+                  <img src="<?php echo $base_url; ?>/public_uploads/<?php echo $showPosts->image;?>" onerror="this.src='https://placehold.co/1200x628'" alt="<?php echo $showPosts->title;?>" title="<?php echo $showPosts->title;?>">
+                  </a>
+                </div>
+              <div class="card-post-content d-flex flex-column flex-grow-1">
+                <div class="card-post-content-info">
+                  <div class="card-post-title">
+                    <h2><a href="<?php echo $base_url; ?>/blog/<?php echo $showPosts->slug;?>"><?php echo $showPosts->title; ?></a></h2>
+                  </div>
+                  <div class="card-post-resume">
+                    <p><?php echo $showPosts->resume; ?></p>
+                  </div>
+                  <div class="card-blog-footer mt-auto">
+                    <div class="card-post-content-date">
+                      <span><i class="bi bi-calendar"></i> <?php echo formatDate($showPosts->publication_date, false); ?></span>
+                    </div>
+                    <div class="card-post-cta text-end">
+                      <a href="<?php echo $base_url; ?>/blog/<?php echo $showPosts->slug;?>"><span class="btn btn-primary"><?php echo $lang['blog_read_more']; ?></span></a>
+                    </div>              
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <?php } ?>
+        </div>
 
     </div>
 </section>

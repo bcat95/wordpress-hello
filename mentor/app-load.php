@@ -54,7 +54,7 @@ function ads_chatgpt_mentor() {
 
 setTimeout(function() {
     // if (localStorage.getItem('ads_chatgpt_mentor') !== '1') ads_chatgpt_mentor();
-    if (localStorage.getItem('ads_chatgpt_mentor_0615') !== '1') ads_chatgpt_mentor_0615();
+    // if (localStorage.getItem('ads_chatgpt_mentor_0615') !== '1') ads_chatgpt_mentor_0615();
 }, 5000);
 </script>
 
@@ -122,4 +122,4 @@ gtag('config', 'G-Y2BPK6JX4E');
 </script>
 
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0&appId=143893371929977&autoLogAppEvents=1" nonce="StKVTDEr"></script>
-<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3682138305573283" crossorigin="anonymous"></script> -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3682138305573283" crossorigin="anonymous"></script>

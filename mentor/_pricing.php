@@ -115,6 +115,7 @@ if($config->display_prompts_packagelist){
               <div class="card-price-thumb"><img alt="<?php echo $showCreditsPack->name;?>" title="<?php echo $showCreditsPack->name;?>" src="<?php echo $base_url."/public_uploads/".$showCreditsPack->image; ?>"  onerror="this.src='<?php echo $base_url; ?>/img/coin-placeholder.png'"></div>
               <h5 class="card-title text-muted text-uppercase text-center"><?php echo $showCreditsPack->name; ?></h5>
               <h6 class="card-price text-center"><?php echo $showCreditsPack->price; ?></h6>
+              <?php if ($showCreditsPack->id == 1) echo '<p class="mb-0 text-center text-danger">Giới hạn mua mỗi ngày 1</p>';?>
               <hr>
               <ul>
                 <?php
@@ -141,7 +142,11 @@ if($config->display_prompts_packagelist){
             <?php } ?>
                       
               <div class="d-grid mt-auto">
+                <?php if ($showCreditsPack->id == 1) { ?>
                 <button data-id="<?php echo $showCreditsPack->id; ?>" data-href="<?php echo $base_url.'/recharge-credits'; ?>" class="btn btn-primary text-uppercase purchase-btn" <?php if ($single_payment_method) echo 'data-single-payment-method="true"'; ?>><?php echo $lang['price_page_btn_purchase']; ?></button>
+                <?php } else { ?>
+                <button class="btn btn-info text-uppercase">Chưa mở bán</button>
+                <?php } ?>
                 <div class="payment-options d-none">
                     <?php if ($stripe_active) { ?>
                         <button class="btn btn-primary stripe-btn"><i class="bi bi-stripe"></i> <?php echo $lang['price_page_pay_stripe']; ?></button>

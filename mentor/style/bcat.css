@@ -12,6 +12,9 @@ img#logo {
     height: auto;
 }
 
+.card-ai-image img {
+    object-fit: contain;
+}
 .card-ai-name h3 {
     font-size: 14px;
     color: #434343;
